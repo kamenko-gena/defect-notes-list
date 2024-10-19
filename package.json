@@ -5,7 +5,10 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "format": "prettier --write src/**/*",
+    "lint": "eslint ./**/*",
+    "stylelint": "stylelint ./**/*.less"
   },
   "private": true,
   "dependencies": {
@@ -17,6 +20,11 @@
     "@angular/platform-browser": "~18.2.0",
     "@angular/platform-browser-dynamic": "~18.2.0",
     "@angular/router": "~18.2.0",
+    "@taiga-ui/cdk": "^3.95.2",
+    "@taiga-ui/core": "^3.95.2",
+    "@taiga-ui/icons": "^3.95.2",
+    "@taiga-ui/kit": "^3.95.2",
+    "@taiga-ui/styles": "^3.95.2",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.3"
   },
@@ -54,6 +62,7 @@
     "jest-preset-angular": "~14.1.0",
     "nx": "20.0.3",
     "prettier": "^2.6.2",
+    "stylelint-less": "^3.0.1",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",

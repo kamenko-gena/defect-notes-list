@@ -9,7 +9,6 @@ module.exports = [
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    // Override or add rules here
     rules: {},
   },
   ...nx.configs['flat/angular'],
@@ -17,6 +16,16 @@ module.exports = [
   {
     files: ['**/*.ts'],
     rules: {
+      'no-unused-vars': 'warn',
+      'object-shorthand': 'error',
+      'curly': 'error',
+      'semi': 'error',
+      'no-redeclare': 'error',
+      'prefer-const': 'error',
+      'quotes': ['error', 'single'],
+      'eqeqeq': 'error',
+      'no-unreachable': 'error',
+      'keyword-spacing': ['error', { 'after': true }],
       '@angular-eslint/directive-selector': [
         'error',
         {
