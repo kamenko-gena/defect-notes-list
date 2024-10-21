@@ -1,0 +1,75 @@
+<form class="note-form-group" [formGroup]="noteFormGroup" (submit)="submitForm()">
+    
+    <tui-select formControlName="section">
+        Раздел
+        <input placeholder="Выберите раздел" tuiTextfield />
+        <tui-data-list-wrapper *tuiDataList [items]="noteSection">
+        </tui-data-list-wrapper>
+        </tui-select>
+        <tui-error
+        formControlName="section"
+        [error]="[] | tuiFieldError | async"
+        ></tui-error>
+
+        <div class="tui-form__row">
+        <tui-input
+            formControlName="equipName"
+            tuiHintContent="A tooltip"
+            >
+            Наименование оборудования
+            <input tuiTextfield />
+            <tui-error
+            formControlName="equipName"
+            [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input>
+        </div>
+
+
+        <div class="tui-form__row">
+        <tui-textarea formControlName="faultDescript">Описание неисправности</tui-textarea>
+        <tui-error
+        formControlName="faultDescript"
+        [error]="[] | tuiFieldError | async"
+        ></tui-error>
+        </div>
+
+
+    
+    
+
+    <div
+        appSolutionDescriptValidator
+        [solutionCheckControl]="noteFormGroup.controls.solutionCheck"
+        [solutionDescriptControl]="noteFormGroup.controls.solutionDescript">
+
+        <div class="tui-form__row">
+            <tui-checkbox-labeled formControlName="solutionCheck">
+                Неисправность устранена
+            </tui-checkbox-labeled>
+        </div>
+
+        <div class="tui-form__row">
+            @if(noteFormGroup.controls.solutionCheck.value) {
+                <div class="tui-form__row">
+                    <tui-textarea formControlName="solutionDescript">Методика устранения неисправности</tui-textarea>
+                <tui-error
+                formControlName="solutionDescript"
+                [error]="[] | tuiFieldError | async"
+                ></tui-error>
+                </div>
+            }
+        </div>
+
+
+    </div>
+
+    
+    
+    <div class="tui-form__row">
+        <button class="tuiButton" tuiButton type="submit" [disabled]="!noteFormGroup.valid">Создать заметку</button>
+    </div>
+        
+
+
+</form>

@@ -1,7 +1,7 @@
 # NotesListApp
 
-Fintech 2024.
-Project.
+**Fintech-JS 2024**
+Project: "Equipment fault list App"
 
 
 

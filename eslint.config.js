@@ -1,6 +1,8 @@
 const nx = require('@nx/eslint-plugin');
+const eslintConfigPrettier = require( "eslint-config-prettier");
 
 module.exports = [
+  eslintConfigPrettier,
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
