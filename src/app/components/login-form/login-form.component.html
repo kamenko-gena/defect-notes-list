@@ -1,0 +1,37 @@
+<form class="login-form-group" [formGroup]="loginFormGroup" (submit)="submitForm()">
+
+    <div class="tui-form__header">
+        <tui-input
+            formControlName="login"
+            tuiHintContent="A tooltip"
+            >
+            Логин
+            <input tuiTextfield />
+            <tui-error
+            formControlName="login"
+            [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input>
+    </div>
+
+    <div class="tui-form__row">
+        <tui-input-password
+            formControlName="password"
+            tuiTextfieldSize="s"
+        >
+            Пароль
+            <input tuiTextfield />
+            <tui-error
+            formControlName="password"
+            [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input-password>
+
+    </div>
+
+    <div class="tui-form__buttons">
+        <button class="tui-form__button" tuiButton type="submit" [disabled]="!loginFormGroup.valid">Войти</button>
+    </div>
+   
+
+</form>

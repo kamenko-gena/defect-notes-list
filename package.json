@@ -16,6 +16,7 @@
     "@angular/common": "~18.2.0",
     "@angular/compiler": "~18.2.0",
     "@angular/core": "~18.2.0",
+    "@angular/fire": "^18.0.1",
     "@angular/forms": "~18.2.0",
     "@angular/platform-browser": "~18.2.0",
     "@angular/platform-browser-dynamic": "~18.2.0",
@@ -25,6 +26,7 @@
     "@taiga-ui/experimental": "^3.95.2",
     "@taiga-ui/icons": "^3.95.2",
     "@taiga-ui/kit": "^3.95.2",
+    "@taiga-ui/layout": "^3.95.2",
     "@taiga-ui/styles": "^3.95.2",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.3"
