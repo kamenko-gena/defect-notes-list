@@ -6,7 +6,13 @@ import { CreateNoteFormComponent } from 'src/app/components/create-note-form/cre
 @Component({
     selector: 'app-my-notes-create-page',
     standalone: true,
-    imports: [CommonModule, TuiRootModule, TuiDialogModule, TuiAlertModule, CreateNoteFormComponent],
+    imports: [
+        CommonModule,
+        TuiRootModule,
+        TuiDialogModule,
+        TuiAlertModule,
+        CreateNoteFormComponent,
+    ],
     templateUrl: './my-notes-create-page.component.html',
     styleUrl: './my-notes-create-page.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,

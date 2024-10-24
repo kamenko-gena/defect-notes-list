@@ -1,26 +1,12 @@
 <div class="auth-form">
-  <tui-tabs>
-    <button
-      tuiTab
-      (click)="onTabClick(1)"
-    >
-      Вход
-    </button>
-    <button
-      tuiTab
-      (click)="onTabClick(2)"
-    >
-      Регистрация
-    </button>
-  </tui-tabs>
-  
-  
-  @if (activeTab() === 1) {
-    <app-login-form></app-login-form> 
-  } @else {
+    <tui-tabs>
+        <button tuiTab (click)="onTabClick(1)">Вход</button>
+        <button tuiTab (click)="onTabClick(2)">Регистрация</button>
+    </tui-tabs>
+
+    @if (activeTab() === 1) {
+    <app-login-form></app-login-form>
+    } @else {
     <app-registr-form></app-registr-form>
-  }
-
+    }
 </div>
-
- 

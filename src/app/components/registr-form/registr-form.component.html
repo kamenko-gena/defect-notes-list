@@ -1,29 +1,37 @@
-<form class="registr-form-group" [formGroup]="registrFormGroup" (submit)="submitForm()">
-
+<form
+    class="registr-form-group"
+    [formGroup]="registrFormGroup"
+    (submit)="submitForm()"
+>
     <div class="tui-form__header">
-        <tui-input
-            formControlName="login"
-            tuiHintContent="A tooltip"
-            >
-            Логин
+        <tui-input formControlName="userName" tuiHintContent="A tooltip">
+            Имя
             <input tuiTextfield />
             <tui-error
-            formControlName="login"
-            [error]="[] | tuiFieldError | async"
+                formControlName="userName"
+                [error]="[] | tuiFieldError | async"
             ></tui-error>
         </tui-input>
     </div>
 
     <div class="tui-form__row">
-        <tui-input-password
-            formControlName="password"
-            tuiTextfieldSize="s"
-        >
+        <tui-input formControlName="email" tuiHintContent="A tooltip">
+            Email
+            <input tuiTextfield />
+            <tui-error
+                formControlName="email"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input>
+    </div>
+
+    <div class="tui-form__row">
+        <tui-input-password formControlName="password" tuiTextfieldSize="s">
             Пароль
             <input tuiTextfield />
             <tui-error
-            formControlName="password"
-            [error]="[] | tuiFieldError | async"
+                formControlName="password"
+                [error]="[] | tuiFieldError | async"
             ></tui-error>
         </tui-input-password>
     </div>
@@ -36,18 +44,22 @@
             Подтверждение пароля
             <input tuiTextfield />
             <tui-error
-            formControlName="confirmPassword"
-            [error]="[] | tuiFieldError | async"
+                formControlName="confirmPassword"
+                [error]="[] | tuiFieldError | async"
             ></tui-error>
         </tui-input-password>
     </div>
 
-    <tui-error
-    [error]="[] | tuiFieldError | async"
-    ></tui-error>
+    <tui-error [error]="[] | tuiFieldError | async"></tui-error>
 
     <div class="tui-form__buttons">
-        <button class="tuiButton" tuiButton type="submit" [disabled]="!registrFormGroup.valid">Зарегистрироваться</button>
+        <button
+            class="tuiButton"
+            tuiButton
+            type="submit"
+            [disabled]="!registrFormGroup.valid"
+        >
+            Зарегистрироваться
+        </button>
     </div>
-    
 </form>

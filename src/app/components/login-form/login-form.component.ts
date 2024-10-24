@@ -1,13 +1,41 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TuiButtonModule, TuiErrorModule } from '@taiga-ui/core';
-import { TUI_INPUT_PASSWORD_DEFAULT_OPTIONS, TUI_INPUT_PASSWORD_OPTIONS, TUI_VALIDATION_ERRORS, TuiFieldErrorPipeModule, TuiInputModule, TuiInputPasswordModule } from '@taiga-ui/kit';
+import {
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
+import {
+    TuiAlertModule,
+    TuiAlertService,
+    TuiButtonModule,
+    TuiErrorModule,
+} from '@taiga-ui/core';
+import {
+    TUI_INPUT_PASSWORD_DEFAULT_OPTIONS,
+    TUI_INPUT_PASSWORD_OPTIONS,
+    TUI_VALIDATION_ERRORS,
+    TuiFieldErrorPipeModule,
+    TuiInputModule,
+    TuiInputPasswordModule,
+} from '@taiga-ui/kit';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login-form',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, TuiButtonModule, TuiErrorModule, TuiFieldErrorPipeModule, TuiInputModule, TuiInputPasswordModule],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        TuiButtonModule,
+        TuiErrorModule,
+        TuiFieldErrorPipeModule,
+        TuiInputModule,
+        TuiInputPasswordModule,
+        TuiAlertModule,
+    ],
     templateUrl: './login-form.component.html',
     styleUrl: './login-form.component.less',
     providers: [
@@ -17,7 +45,6 @@ import { TUI_INPUT_PASSWORD_DEFAULT_OPTIONS, TUI_INPUT_PASSWORD_OPTIONS, TUI_VAL
                 required: 'Обязательное заполнение!',
                 minlength: ({ requiredLength }: { requiredLength: string }) =>
                     `Минимальная длинна ${requiredLength}`,
-                pattern: 'Используйте только латиницу и цифры'
             },
         },
         {
@@ -27,25 +54,41 @@ import { TUI_INPUT_PASSWORD_DEFAULT_OPTIONS, TUI_INPUT_PASSWORD_OPTIONS, TUI_VAL
                 icons: {
                     hide: 'tuiIconEyeOff',
                     show: 'tuiIconEye',
-                }
+                },
             },
-        }
+        },
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent {
+    authService = inject(AuthService);
+    router = inject(Router);
+    alerts = inject(TuiAlertService);
 
     readonly loginFormGroup = new FormGroup({
-        login: new FormControl<string | null>('', {
-            validators: [Validators.required, Validators.minLength(6), Validators.pattern('[A-Za-z0-9]*')]
+        email: new FormControl<string | null>('', {
+            validators: [Validators.required, Validators.minLength(6)],
         }),
         password: new FormControl<string | null>('', {
-            validators: [Validators.required, Validators.minLength(8)]
-        })
+            validators: [Validators.required, Validators.minLength(8)],
+        }),
     });
 
     submitForm() {
-        console.log('Submit login form');
-        this.loginFormGroup.reset();
+        if (this.loginFormGroup.valid) {
+            const rowForm = this.loginFormGroup.getRawValue();
+            this.authService
+                .login(rowForm.email!, rowForm.password!)
+                .subscribe({
+                    next: () => {
+                        alert('Успешный вход!');
+                        this.router.navigateByUrl('/');
+                    },
+                    error: (err) => {
+                        alert(err.code);
+                    },
+                });
+            this.loginFormGroup.reset();
+        }
     }
 }

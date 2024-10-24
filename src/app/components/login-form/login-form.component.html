@@ -1,37 +1,38 @@
-<form class="login-form-group" [formGroup]="loginFormGroup" (submit)="submitForm()">
-
+<form
+    class="login-form-group"
+    [formGroup]="loginFormGroup"
+    (submit)="submitForm()"
+>
     <div class="tui-form__header">
-        <tui-input
-            formControlName="login"
-            tuiHintContent="A tooltip"
-            >
-            Логин
+        <tui-input formControlName="email" tuiHintContent="A tooltip">
+            Email
             <input tuiTextfield />
             <tui-error
-            formControlName="login"
-            [error]="[] | tuiFieldError | async"
+                formControlName="email"
+                [error]="[] | tuiFieldError | async"
             ></tui-error>
         </tui-input>
     </div>
 
     <div class="tui-form__row">
-        <tui-input-password
-            formControlName="password"
-            tuiTextfieldSize="s"
-        >
+        <tui-input-password formControlName="password" tuiTextfieldSize="s">
             Пароль
             <input tuiTextfield />
             <tui-error
-            formControlName="password"
-            [error]="[] | tuiFieldError | async"
+                formControlName="password"
+                [error]="[] | tuiFieldError | async"
             ></tui-error>
         </tui-input-password>
-
     </div>
 
     <div class="tui-form__buttons">
-        <button class="tui-form__button" tuiButton type="submit" [disabled]="!loginFormGroup.valid">Войти</button>
+        <button
+            class="tui-form__button"
+            tuiButton
+            type="submit"
+            [disabled]="!loginFormGroup.valid"
+        >
+            Войти
+        </button>
     </div>
-   
-
 </form>

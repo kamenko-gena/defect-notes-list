@@ -11,24 +11,24 @@ export const appRoutes: Route[] = [
         children: [
             {
                 path: 'create',
-                component: MyNotesCreatePageComponent
+                component: MyNotesCreatePageComponent,
             },
             {
                 path: '',
-                component: MyNotesPageComponent
-            }
-        ]
+                component: MyNotesPageComponent,
+            },
+        ],
     },
     {
         path: 'authentication',
-        component: AuthenticationPageComponent
+        component: AuthenticationPageComponent,
     },
     {
         path: '',
-        component: HomePageComponent
+        component: HomePageComponent,
     },
     {
         path: '**',
-        component: NotFoundPageComponent
-    }
+        component: NotFoundPageComponent,
+    },
 ];

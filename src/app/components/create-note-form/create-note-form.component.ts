@@ -43,7 +43,7 @@ import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-
         TuiErrorModule,
         TuiAlertModule,
         TuiInputModule,
-        SolutionDescriptValidatorDirective
+        SolutionDescriptValidatorDirective,
     ],
     templateUrl: './create-note-form.component.html',
     styleUrl: './create-note-form.component.less',
@@ -66,8 +66,8 @@ export class CreateNoteFormComponent {
         'Пожарная автоматика',
         'Охранная сигнализация',
         'Управление доступом',
-        'Видеонаблюдение'
-      ];
+        'Видеонаблюдение',
+    ];
 
     readonly noteFormGroup = new FormGroup({
         section: new FormControl<

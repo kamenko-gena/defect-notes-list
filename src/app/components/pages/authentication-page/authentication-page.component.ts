@@ -8,7 +8,14 @@ import { RegistrFormComponent } from '../../registr-form/registr-form.component'
 @Component({
     selector: 'app-authentication-page',
     standalone: true,
-    imports: [CommonModule, LoginFormComponent, RegistrFormComponent, TuiTabsModule, RouterLinkActive, RouterOutlet],
+    imports: [
+        CommonModule,
+        LoginFormComponent,
+        RegistrFormComponent,
+        TuiTabsModule,
+        RouterLinkActive,
+        RouterOutlet,
+    ],
     templateUrl: './authentication-page.component.html',
     styleUrl: './authentication-page.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
