@@ -1,0 +1,54 @@
+<div class="notes-list">
+    @if (notes$ | async; as notes) { @for(note of notes; track note) {
+
+    <tui-accordion-item>
+        <div class="accordion-content">
+            @if (note.solutionCheck) {
+            <tui-badge
+                status="success"
+                value="Устранено"
+                class="tui-space_right-2 tui-space_bottom-2"
+            ></tui-badge>
+            } @else {
+            <tui-badge
+                status="error"
+                value="Нет решения"
+                class="tui-space_right-2 tui-space_bottom-2"
+            ></tui-badge>
+            }
+            {{ note.equipName }}
+
+            <tui-badge
+                class="tui-space_right-2 tui-space_bottom-2"
+                [value]="note.date"
+            ></tui-badge>
+
+            <ng-template tuiAccordionItemContent>
+                <h4>{{ note.section }}</h4>
+                <p>{{ note.faultDescript }}</p>
+
+                @if(note.solutionCheck) {
+                <h5>Методика устранения</h5>
+                <p>{{ note.solutionDescript }}</p>
+                }
+
+                <button
+                    class="tuiIconButton"
+                    appearance="mono"
+                    tuiIconButton
+                    icon="tuiIconTrash2"
+                ></button>
+
+                <button
+                    class="tuiIconButton"
+                    appearance="mono"
+                    tuiIconButton
+                    icon="tuiIconEdit"
+                ></button>
+            </ng-template>
+        </div>
+    </tui-accordion-item>
+    } @empty {
+    <h2>Список пуст!</h2>
+    } }
+</div>

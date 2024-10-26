@@ -25,6 +25,8 @@ import {
 } from '@taiga-ui/core';
 import { tuiMarkControlAsTouchedAndValidate } from '@taiga-ui/cdk';
 import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-descript-validator/solution-descript-validator.directive';
+import { LocalStorageService } from 'src/app/services/local-storage-service/local-storage.service';
+import { NoteInterface } from 'src/app/interfaces/note-interface';
 
 @Component({
     selector: 'app-create-note-form',
@@ -61,6 +63,9 @@ import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-
 })
 export class CreateNoteFormComponent {
     private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    private readonly localStorageService = inject(LocalStorageService);
+
+    readonly currentDate = new Date();
 
     readonly noteSection = [
         'Пожарная автоматика',
@@ -95,6 +100,16 @@ export class CreateNoteFormComponent {
                     status: 'success',
                 })
                 .subscribe();
+
+            this.localStorageService.addNote({
+                ...this.noteFormGroup.value,
+                date:
+                    this.currentDate.getDate() +
+                    '.' +
+                    (this.currentDate.getMonth() + 1) +
+                    '.' +
+                    this.currentDate.getFullYear(),
+            } as NoteInterface);
             this.noteFormGroup.reset();
         } else {
             tuiMarkControlAsTouchedAndValidate(this.noteFormGroup);
