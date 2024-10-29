@@ -61,9 +61,9 @@ import { Router } from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent {
-    authService = inject(AuthService);
-    router = inject(Router);
-    alerts = inject(TuiAlertService);
+    private readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
+    private readonly alerts = inject(TuiAlertService);
 
     readonly loginFormGroup = new FormGroup({
         email: new FormControl<string | null>('', {
@@ -76,18 +76,20 @@ export class LoginFormComponent {
 
     submitForm() {
         if (this.loginFormGroup.valid) {
-            const rowForm = this.loginFormGroup.getRawValue();
-            this.authService
-                .login(rowForm.email!, rowForm.password!)
-                .subscribe({
-                    next: () => {
-                        alert('Успешный вход!');
-                        this.router.navigateByUrl('/');
-                    },
-                    error: (err) => {
-                        alert(err.code);
-                    },
-                });
+            const loginFormValue = this.loginFormGroup.getRawValue();
+
+            const email = loginFormValue.email ?? '';
+            const password = loginFormValue.password ?? '';
+
+            this.authService.login(email, password).subscribe({
+                next: () => {
+                    alert('Успешный вход!');
+                    this.router.navigateByUrl('/');
+                },
+                error: (err) => {
+                    alert(err.code);
+                },
+            });
             this.loginFormGroup.reset();
         }
     }

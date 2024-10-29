@@ -1,12 +1,11 @@
 <form
-    class="registr-form-group"
-    [formGroup]="registrFormGroup"
+    class="registration-form-group"
+    [formGroup]="registrationFormGroup"
     (submit)="submitForm()"
 >
     <div class="tui-form__header">
         <tui-input formControlName="userName" tuiHintContent="A tooltip">
             Имя
-            <input tuiTextfield />
             <tui-error
                 formControlName="userName"
                 [error]="[] | tuiFieldError | async"
@@ -17,7 +16,6 @@
     <div class="tui-form__row">
         <tui-input formControlName="email" tuiHintContent="A tooltip">
             Email
-            <input tuiTextfield />
             <tui-error
                 formControlName="email"
                 [error]="[] | tuiFieldError | async"
@@ -28,7 +26,6 @@
     <div class="tui-form__row">
         <tui-input-password formControlName="password" tuiTextfieldSize="s">
             Пароль
-            <input tuiTextfield />
             <tui-error
                 formControlName="password"
                 [error]="[] | tuiFieldError | async"
@@ -42,7 +39,6 @@
             tuiTextfieldSize="s"
         >
             Подтверждение пароля
-            <input tuiTextfield />
             <tui-error
                 formControlName="confirmPassword"
                 [error]="[] | tuiFieldError | async"
@@ -57,7 +53,7 @@
             class="tuiButton"
             tuiButton
             type="submit"
-            [disabled]="!registrFormGroup.valid"
+            [disabled]="!registrationFormGroup.valid"
         >
             Зарегистрироваться
         </button>

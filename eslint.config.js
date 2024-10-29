@@ -16,9 +16,10 @@ module.exports = [
   ...nx.configs['flat/angular'],
   ...nx.configs['flat/angular-template'],
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.html'],
     rules: {
       'no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-expressions': 'warn',
       'object-shorthand': 'error',
       'curly': 'error',
       'semi': 'error',
@@ -45,10 +46,5 @@ module.exports = [
         },
       ],
     },
-  },
-  {
-    files: ['**/*.html'],
-    // Override or add rules here
-    rules: {},
   },
 ];

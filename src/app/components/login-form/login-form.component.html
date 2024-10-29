@@ -6,7 +6,6 @@
     <div class="tui-form__header">
         <tui-input formControlName="email" tuiHintContent="A tooltip">
             Email
-            <input tuiTextfield />
             <tui-error
                 formControlName="email"
                 [error]="[] | tuiFieldError | async"
@@ -17,7 +16,6 @@
     <div class="tui-form__row">
         <tui-input-password formControlName="password" tuiTextfieldSize="s">
             Пароль
-            <input tuiTextfield />
             <tui-error
                 formControlName="password"
                 [error]="[] | tuiFieldError | async"

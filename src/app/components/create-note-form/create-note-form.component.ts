@@ -28,6 +28,16 @@ import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-
 import { LocalStorageService } from 'src/app/services/local-storage-service/local-storage.service';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
 
+const NOTE_SECTIONS = [
+    'Пожарная автоматика',
+    'Охранная сигнализация',
+    'Управление доступом',
+    'Видеонаблюдение',
+];
+const CURRENT_DATE = new Date();
+
+type sectionsType = typeof NOTE_SECTIONS;
+
 @Component({
     selector: 'app-create-note-form',
     standalone: true,
@@ -65,23 +75,13 @@ export class CreateNoteFormComponent {
     private readonly alerts: TuiAlertService = inject(TuiAlertService);
     private readonly localStorageService = inject(LocalStorageService);
 
-    readonly currentDate = new Date();
-
-    readonly noteSection = [
-        'Пожарная автоматика',
-        'Охранная сигнализация',
-        'Управление доступом',
-        'Видеонаблюдение',
-    ];
+    readonly currentDate = CURRENT_DATE;
+    readonly noteSection = NOTE_SECTIONS;
 
     readonly noteFormGroup = new FormGroup({
-        section: new FormControl<
-            | 'Пожарная автоматика'
-            | 'Охранная сигнализация'
-            | 'Управление доступом'
-            | 'Видеонаблюдение'
-            | null
-        >(null, [Validators.required]),
+        section: new FormControl<sectionsType[number] | null>(null, [
+            Validators.required,
+        ]),
         equipName: new FormControl<string | null>('', {
             validators: [Validators.required, Validators.maxLength(50)],
         }),

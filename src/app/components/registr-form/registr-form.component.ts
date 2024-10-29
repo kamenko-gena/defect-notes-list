@@ -68,7 +68,7 @@ export class RegistrFormComponent {
     router = inject(Router);
     alerts = inject(TuiAlertService);
 
-    readonly registrFormGroup = new FormGroup(
+    readonly registrationFormGroup = new FormGroup(
         {
             userName: new FormControl<string | null>('', {
                 validators: [
@@ -92,29 +92,33 @@ export class RegistrFormComponent {
     );
 
     submitForm() {
-        if (this.registrFormGroup.valid) {
-            const rowForm = this.registrFormGroup.getRawValue();
-            this.authService
-                .registr(rowForm.email!, rowForm.userName!, rowForm.password!)
-                .subscribe({
-                    next: () => {
-                        this.alerts.open('Успешная регистрация!', {
-                            label: 'Успех',
-                            status: 'success',
-                        });
-                        this.router.navigateByUrl('/');
-                    },
-                    error: (err) => {
-                        alert(err.code);
-                        this.alerts
-                            .open('Ошбика!', {
-                                label: 'Ошибка регистрации!',
-                                status: 'error',
-                            })
-                            .subscribe();
-                    },
-                });
-            this.registrFormGroup.reset();
+        if (this.registrationFormGroup.valid) {
+            const registrationFormValue =
+                this.registrationFormGroup.getRawValue();
+
+            const email = registrationFormValue.email ?? '';
+            const userName = registrationFormValue.userName ?? '';
+            const password = registrationFormValue.password ?? '';
+
+            this.authService.registration(email, userName, password).subscribe({
+                next: () => {
+                    this.alerts.open('Успешная регистрация!', {
+                        label: 'Успех',
+                        status: 'success',
+                    });
+                    this.router.navigateByUrl('/');
+                },
+                error: (err) => {
+                    alert(err.code);
+                    this.alerts
+                        .open('Ошбика!', {
+                            label: 'Ошибка регистрации!',
+                            status: 'error',
+                        })
+                        .subscribe();
+                },
+            });
+            this.registrationFormGroup.reset();
         }
     }
 }

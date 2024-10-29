@@ -6,20 +6,18 @@ import { AbstractControl, FormControl, Validators } from '@angular/forms';
     standalone: true,
 })
 export class SolutionDescriptValidatorDirective implements OnInit {
-    @Input() solutionCheckControl!: AbstractControl;
-    @Input() solutionDescriptControl!: FormControl;
+    @Input({ required: true }) solutionCheckControl!: AbstractControl;
+    @Input({ required: true }) solutionDescriptControl!: FormControl;
 
     ngOnInit() {
         this.solutionCheckControl.valueChanges.subscribe(
             (isChecked: boolean) => {
-                if (isChecked) {
-                    this.solutionDescriptControl.setValidators([
-                        Validators.required,
-                        Validators.maxLength(500),
-                    ]);
-                } else {
-                    this.solutionDescriptControl.clearValidators();
-                }
+                isChecked
+                    ? this.solutionDescriptControl.setValidators([
+                          Validators.required,
+                          Validators.maxLength(500),
+                      ])
+                    : this.solutionDescriptControl.clearValidators();
                 this.solutionDescriptControl.updateValueAndValidity();
             }
         );

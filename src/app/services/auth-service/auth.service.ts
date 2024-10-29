@@ -5,7 +5,7 @@ import {
     signInWithEmailAndPassword,
     updateProfile,
 } from '@angular/fire/auth';
-import { from, Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -13,28 +13,25 @@ import { from, Observable } from 'rxjs';
 export class AuthService {
     firebaseAuth = inject(Auth);
 
-    registr(
+    registration(
         email: string,
         username: string,
         password: string
     ): Observable<void> {
-        const registrPromise = createUserWithEmailAndPassword(
-            this.firebaseAuth,
-            email,
-            password
-        ).then((response) =>
-            updateProfile(response.user, { displayName: username })
-        );
 
-        return from(registrPromise);
+        return from(createUserWithEmailAndPassword(
+                this.firebaseAuth,
+                email,
+                password
+            )).pipe(
+                map((response) => {updateProfile(response.user, { displayName: username });})
+            );
+
     }
 
     login(email: string, password: string): Observable<void> {
-        const loginPromise = signInWithEmailAndPassword(
-            this.firebaseAuth,
-            email,
-            password
-        ).then(() => {});
-        return from(loginPromise);
-    }
+
+        return from(signInWithEmailAndPassword(this.firebaseAuth, email, password)).pipe(
+            map(() => {}));
+        };
 }
