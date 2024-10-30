@@ -36,7 +36,8 @@ const NOTE_SECTIONS = [
 ];
 const CURRENT_DATE = new Date();
 
-type sectionsType = typeof NOTE_SECTIONS;
+type NoteSections = typeof NOTE_SECTIONS;
+type Section = NoteSections[number];
 
 @Component({
     selector: 'app-create-note-form',
@@ -79,7 +80,7 @@ export class CreateNoteFormComponent {
     readonly noteSection = NOTE_SECTIONS;
 
     readonly noteFormGroup = new FormGroup({
-        section: new FormControl<sectionsType[number] | null>(null, [
+        section: new FormControl<Section | null>(null, [
             Validators.required,
         ]),
         equipName: new FormControl<string | null>('', {

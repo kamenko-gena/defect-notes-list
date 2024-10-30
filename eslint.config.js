@@ -19,7 +19,7 @@ module.exports = [
     files: ['**/*.ts', '**/*.html'],
     rules: {
       'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-expressions': 'warn',
+      '@typescript-eslint/no-unused-expressions': ['error', {'allowTernary' : true }],
       'object-shorthand': 'error',
       'curly': 'error',
       'semi': 'error',

@@ -4,8 +4,9 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     updateProfile,
+    UserCredential,
 } from '@angular/fire/auth';
-import { from, map, Observable } from 'rxjs';
+import { from, Observable, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -17,21 +18,20 @@ export class AuthService {
         email: string,
         username: string,
         password: string
-    ): Observable<void> {
+    ): Observable<UserCredential> {
 
         return from(createUserWithEmailAndPassword(
                 this.firebaseAuth,
                 email,
                 password
             )).pipe(
-                map((response) => {updateProfile(response.user, { displayName: username });})
+                tap((response) => {updateProfile(response.user, { displayName: username });})
             );
 
     }
 
-    login(email: string, password: string): Observable<void> {
+    login(email: string, password: string): Observable<UserCredential> {
 
-        return from(signInWithEmailAndPassword(this.firebaseAuth, email, password)).pipe(
-            map(() => {}));
+        return from(signInWithEmailAndPassword(this.firebaseAuth, email, password));
         };
 }
