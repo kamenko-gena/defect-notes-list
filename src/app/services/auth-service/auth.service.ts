@@ -19,19 +19,18 @@ export class AuthService {
         username: string,
         password: string
     ): Observable<UserCredential> {
-
-        return from(createUserWithEmailAndPassword(
-                this.firebaseAuth,
-                email,
-                password
-            )).pipe(
-                tap((response) => {updateProfile(response.user, { displayName: username });})
-            );
-
+        return from(
+            createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+        ).pipe(
+            tap((response) => {
+                updateProfile(response.user, { displayName: username });
+            })
+        );
     }
 
     login(email: string, password: string): Observable<UserCredential> {
-
-        return from(signInWithEmailAndPassword(this.firebaseAuth, email, password));
-        };
+        return from(
+            signInWithEmailAndPassword(this.firebaseAuth, email, password)
+        );
+    }
 }

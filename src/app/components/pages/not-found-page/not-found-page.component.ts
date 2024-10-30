@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiSvgModule } from '@taiga-ui/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { notFoundPageSvg } from './not-found-page-svg';
 
 @Component({
     selector: 'app-not-found-page',
@@ -11,4 +13,9 @@ import { TuiSvgModule } from '@taiga-ui/core';
     styleUrl: './not-found-page.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NotFoundPageComponent {}
+export class NotFoundPageComponent {
+    private readonly domSanitizer = inject(DomSanitizer);
+
+    bypassNotFoundPageSvg =
+        this.domSanitizer.bypassSecurityTrustHtml(notFoundPageSvg);
+}

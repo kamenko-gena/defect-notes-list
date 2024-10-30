@@ -80,9 +80,7 @@ export class CreateNoteFormComponent {
     readonly noteSection = NOTE_SECTIONS;
 
     readonly noteFormGroup = new FormGroup({
-        section: new FormControl<Section | null>(null, [
-            Validators.required,
-        ]),
+        section: new FormControl<Section | null>(null, [Validators.required]),
         equipName: new FormControl<string | null>('', {
             validators: [Validators.required, Validators.maxLength(50)],
         }),
