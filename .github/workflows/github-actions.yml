@@ -50,8 +50,8 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npx eslint . --config eslint.config.js --ext .ts,.js,.tsx,.jsx
-        
+        run: npm run lint
+
       - name: Run Prettier
         run: npx prettier --check .
 
