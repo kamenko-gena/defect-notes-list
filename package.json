@@ -8,7 +8,8 @@
     "test": "nx test",
     "format": "prettier --write src/**/*",
     "lint": "eslint src/**/*",
-    "stylelint": "stylelint ./**/*.less"
+    "prettier": "prettier --check src/**/*",
+    "stylelint": "stylelint src/**/*.less"
   },
   "private": true,
   "dependencies": {
