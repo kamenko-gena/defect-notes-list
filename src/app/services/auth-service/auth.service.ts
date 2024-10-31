@@ -17,20 +17,20 @@ export class AuthService {
     registration(
         email: string,
         username: string,
-        password: string
+        password: string,
     ): Observable<UserCredential> {
         return from(
-            createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+            createUserWithEmailAndPassword(this.firebaseAuth, email, password),
         ).pipe(
             tap((response) => {
                 updateProfile(response.user, { displayName: username });
-            })
+            }),
         );
     }
 
     login(email: string, password: string): Observable<UserCredential> {
         return from(
-            signInWithEmailAndPassword(this.firebaseAuth, email, password)
+            signInWithEmailAndPassword(this.firebaseAuth, email, password),
         );
     }
 }

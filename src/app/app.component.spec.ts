@@ -14,7 +14,7 @@ describe('AppComponent', () => {
         fixture.detectChanges();
         const compiled = fixture.nativeElement as HTMLElement;
         expect(compiled.querySelector('h1')?.textContent).toContain(
-            'Welcome notes-list-app'
+            'Welcome notes-list-app',
         );
     });
 

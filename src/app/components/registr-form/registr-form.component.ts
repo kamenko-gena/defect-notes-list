@@ -85,10 +85,10 @@ export class RegistrFormComponent {
             }),
             confirmPassword: new FormControl<string | null>(
                 '',
-                Validators.required
+                Validators.required,
             ),
         },
-        { validators: passwordsMatchValidator() }
+        { validators: passwordsMatchValidator() },
     );
 
     submitForm() {
