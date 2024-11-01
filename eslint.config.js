@@ -1,6 +1,8 @@
 const nx = require('@nx/eslint-plugin');
+const eslintConfigPrettier = require( "eslint-config-prettier");
 
 module.exports = [
+  eslintConfigPrettier,
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
@@ -14,9 +16,10 @@ module.exports = [
   ...nx.configs['flat/angular'],
   ...nx.configs['flat/angular-template'],
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.html'],
     rules: {
       'no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-expressions': ['error', {'allowTernary' : true }],
       'object-shorthand': 'error',
       'curly': 'error',
       'semi': 'error',
@@ -43,10 +46,5 @@ module.exports = [
         },
       ],
     },
-  },
-  {
-    files: ['**/*.html'],
-    // Override or add rules here
-    rules: {},
   },
 ];

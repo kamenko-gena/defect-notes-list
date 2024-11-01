@@ -1,0 +1,61 @@
+<form
+    class="registration-form-group"
+    [formGroup]="registrationFormGroup"
+    (submit)="submitForm()"
+>
+    <div class="tui-form__header">
+        <tui-input formControlName="userName" tuiHintContent="A tooltip">
+            Имя
+            <tui-error
+                formControlName="userName"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input>
+    </div>
+
+    <div class="tui-form__row">
+        <tui-input formControlName="email" tuiHintContent="A tooltip">
+            Email
+            <tui-error
+                formControlName="email"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input>
+    </div>
+
+    <div class="tui-form__row">
+        <tui-input-password formControlName="password" tuiTextfieldSize="s">
+            Пароль
+            <tui-error
+                formControlName="password"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input-password>
+    </div>
+
+    <div class="tui-form__row">
+        <tui-input-password
+            formControlName="confirmPassword"
+            tuiTextfieldSize="s"
+        >
+            Подтверждение пароля
+            <tui-error
+                formControlName="confirmPassword"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </tui-input-password>
+    </div>
+
+    <tui-error [error]="[] | tuiFieldError | async"></tui-error>
+
+    <div class="tui-form__buttons">
+        <button
+            class="tuiButton"
+            tuiButton
+            type="submit"
+            [disabled]="!registrationFormGroup.valid"
+        >
+            Зарегистрироваться
+        </button>
+    </div>
+</form>
