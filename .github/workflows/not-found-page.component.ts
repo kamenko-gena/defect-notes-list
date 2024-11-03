@@ -2,7 +2,10 @@ import {
     ChangeDetectionStrategy,
     Component,
     inject,
+    Input,
+    OnChanges,
     OnInit,
+    SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
@@ -24,6 +27,11 @@ export class NotFoundPageComponent implements OnInit {
 
     notFoundPageImg: SafeHtml = '';
 
+    // constructor(
+    //     private httpClient: HttpClient,
+    //     private domSanitizer: DomSanitizer,
+    // ) {}
+
     ngOnInit(): void {
         this.httpClient
             .get(`assets/not-found-page.svg`, {
@@ -31,7 +39,23 @@ export class NotFoundPageComponent implements OnInit {
             })
             .subscribe((value) => {
                 this.notFoundPageImg =
-                    this.domSanitizer.bypassSecurityTrustUrl(value);
+                    this.domSanitizer.bypassSecurityTrustHtml(value);
             });
+        this.notFoundPageImg = 'assets/not-found-page.svg';
+            // .subscribe({
+            //     next: (value) => {
+            //         this.notFoundPageImg = this.domSanitizer.bypassSecurityTrustHtml(value);
+            //         console.log('Получены данные:', this.notFoundPageImg);
+            //     },
+            //     error: (error) => {
+            //         console.error('Ошибка загрузки:', error);
+            //     },
+            //     complete: () => {
+            //         console.log('Загрузка завершена', this.notFoundPageImg);
+            //     }
+            // })
     }
+
+    // notFoundPageImg =
+    //     this.domSanitizer.bypassSecurityTrustHtml(notFoundPageSvg);
 }
