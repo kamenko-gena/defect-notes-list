@@ -3,6 +3,7 @@ import {
     Component,
     inject,
     OnInit,
+    signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TuiBlockStatusModule } from '@taiga-ui/layout';
@@ -21,8 +22,7 @@ import { HttpClient } from '@angular/common/http';
 export class NotFoundPageComponent implements OnInit {
     private readonly domSanitizer = inject(DomSanitizer);
     private readonly httpClient = inject(HttpClient);
-
-    notFoundPageImg: SafeHtml = '';
+    notFoundPageImg = signal<SafeHtml>('');
 
     ngOnInit(): void {
         this.httpClient
@@ -30,8 +30,9 @@ export class NotFoundPageComponent implements OnInit {
                 responseType: 'text',
             })
             .subscribe((value) => {
-                this.notFoundPageImg =
-                    this.domSanitizer.bypassSecurityTrustUrl(value);
+                this.notFoundPageImg.set(
+                    this.domSanitizer.bypassSecurityTrustHtml(value),
+                );
             });
     }
 }
