@@ -46,16 +46,16 @@
         </div>
 
         <div class="tui-form__row">
-            @if(noteFormGroup.controls.solutionCheck.value) {
-            <div class="tui-form__row">
-                <tui-textarea formControlName="solutionDescript"
-                    >Методика устранения неисправности</tui-textarea
-                >
-                <tui-error
-                    formControlName="solutionDescript"
-                    [error]="[] | tuiFieldError | async"
-                ></tui-error>
-            </div>
+            @if (noteFormGroup.controls.solutionCheck.value) {
+                <div class="tui-form__row">
+                    <tui-textarea formControlName="solutionDescript"
+                        >Методика устранения неисправности</tui-textarea
+                    >
+                    <tui-error
+                        formControlName="solutionDescript"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+                </div>
             }
         </div>
     </div>

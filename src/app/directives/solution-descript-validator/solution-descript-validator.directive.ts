@@ -19,7 +19,7 @@ export class SolutionDescriptValidatorDirective implements OnInit {
                       ])
                     : this.solutionDescriptControl.clearValidators();
                 this.solutionDescriptControl.updateValueAndValidity();
-            }
+            },
         );
     }
 }

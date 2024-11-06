@@ -1,34 +1,33 @@
 const nx = require('@nx/eslint-plugin');
-const eslintConfigPrettier = require( "eslint-config-prettier");
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+
 
 module.exports = [
-  eslintConfigPrettier,
+  eslintPluginPrettierRecommended,
   ...nx.configs['flat/base'],
-  ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
+  ...nx.configs['flat/typescript'],
   {
-    ignores: ['**/dist'],
+    ignores: ['**/dist', '**/*.config.js'],
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    rules: {},
+    rules: {
+      '@typescript-eslint/no-unused-expressions': ['error', {'allowTernary' : true }],
+      'prettier/prettier': ['error', {
+        "endOfLine": "auto",
+        'tabWidth': 4,
+        'semi': true,
+        'singleQuote': true,
+        'bracketSpacing': true
+      }],
+    },
   },
   ...nx.configs['flat/angular'],
   ...nx.configs['flat/angular-template'],
   {
-    files: ['**/*.ts', '**/*.html'],
+    files: ['**/*.ts'],
     rules: {
-      'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-expressions': ['error', {'allowTernary' : true }],
-      'object-shorthand': 'error',
-      'curly': 'error',
-      'semi': 'error',
-      'no-redeclare': 'error',
-      'prefer-const': 'error',
-      'quotes': ['error', 'single'],
-      'eqeqeq': 'error',
-      'no-unreachable': 'error',
-      'keyword-spacing': ['error', { 'after': true }],
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -47,4 +46,13 @@ module.exports = [
       ],
     },
   },
+  {
+    files: ['**/*.html'],
+    rules: {
+      'prettier/prettier': ['error', {
+        'tabWidth': 4,
+      }],
+    },
+  },
 ];
+

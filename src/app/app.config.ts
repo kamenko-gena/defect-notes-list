@@ -9,6 +9,7 @@ import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { provideHttpClient } from '@angular/common/http';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDcueZQtZ8_EHxnzPTisM2xFMgIsqAUHpQ',
@@ -27,5 +28,6 @@ export const appConfig: ApplicationConfig = {
         provideFirebaseApp(() => initializeApp(firebaseConfig)),
         provideAuth(() => getAuth()),
         importProvidersFrom([TuiRootModule]),
+        provideHttpClient(),
     ],
 };
