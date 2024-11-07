@@ -105,7 +105,7 @@ export class LoginFormComponent {
                                 status: 'success',
                             })
                             .subscribe();
-                        this.router.navigateByUrl('/');
+                        this.router.navigateByUrl('/my-notes');
                         this.loadingBtn.set(false);
                     }
                 },
