@@ -53,6 +53,7 @@
             class="tuiButton"
             tuiButton
             type="submit"
+            [showLoader]="loadingBtn()"
             [disabled]="!registrationFormGroup.valid"
         >
             Зарегистрироваться

@@ -6,13 +6,13 @@ import {
     updateProfile,
     UserCredential,
 } from '@angular/fire/auth';
-import { from, Observable, tap } from 'rxjs';
+import { catchError, from, Observable, of, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    firebaseAuth = inject(Auth);
+    private readonly firebaseAuth = inject(Auth);
 
     registration(
         email: string,
@@ -28,9 +28,13 @@ export class AuthService {
         );
     }
 
-    login(email: string, password: string): Observable<UserCredential> {
+    login(email: string, password: string): Observable<UserCredential | null> {
         return from(
             signInWithEmailAndPassword(this.firebaseAuth, email, password),
+        ).pipe(
+            catchError(() => {
+                return of(null);
+            }),
         );
     }
 }

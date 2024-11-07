@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormControl,
@@ -64,9 +69,10 @@ import { Router } from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrFormComponent {
-    authService = inject(AuthService);
-    router = inject(Router);
-    alerts = inject(TuiAlertService);
+    private readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
+    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    readonly loadingBtn = signal(false);
 
     readonly registrationFormGroup = new FormGroup(
         {
@@ -92,6 +98,7 @@ export class RegistrFormComponent {
     );
 
     submitForm() {
+        this.loadingBtn.set(true);
         if (this.registrationFormGroup.valid) {
             const registrationFormValue =
                 this.registrationFormGroup.getRawValue();
@@ -102,20 +109,23 @@ export class RegistrFormComponent {
 
             this.authService.registration(email, userName, password).subscribe({
                 next: () => {
-                    this.alerts.open('Успешная регистрация!', {
-                        label: 'Успех',
-                        status: 'success',
-                    });
+                    this.alerts
+                        .open('Успешная регистрация!', {
+                            label: 'Успех',
+                            status: 'success',
+                        })
+                        .subscribe();
+                    this.loadingBtn.set(false);
                     this.router.navigateByUrl('/');
                 },
                 error: (err) => {
-                    alert(err.code);
                     this.alerts
                         .open('Ошбика!', {
-                            label: 'Ошибка регистрации!',
+                            label: `Ошибка регистрации: ${err}`,
                             status: 'error',
                         })
                         .subscribe();
+                    this.loadingBtn.set(false);
                 },
             });
             this.registrationFormGroup.reset();

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormControl,
@@ -63,7 +68,8 @@ import { Router } from '@angular/router';
 export class LoginFormComponent {
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-    private readonly alerts = inject(TuiAlertService);
+    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    readonly loadingBtn = signal(false);
 
     readonly loginFormGroup = new FormGroup({
         email: new FormControl<string | null>('', {
@@ -75,6 +81,7 @@ export class LoginFormComponent {
     });
 
     submitForm() {
+        this.loadingBtn.set(true);
         if (this.loginFormGroup.valid) {
             const loginFormValue = this.loginFormGroup.getRawValue();
 
@@ -82,12 +89,25 @@ export class LoginFormComponent {
             const password = loginFormValue.password ?? '';
 
             this.authService.login(email, password).subscribe({
-                next: () => {
-                    alert('Успешный вход!');
-                    this.router.navigateByUrl('/');
-                },
-                error: (err) => {
-                    alert(err.code);
+                next: (value) => {
+                    if (value === null) {
+                        this.alerts
+                            .open('Ошибка входа', {
+                                label: 'Неверный логин и(или) пароль!',
+                                status: 'error',
+                            })
+                            .subscribe();
+                        this.loadingBtn.set(false);
+                    } else {
+                        this.alerts
+                            .open('Успешный вход!', {
+                                label: 'Подтверждено.',
+                                status: 'success',
+                            })
+                            .subscribe();
+                        this.router.navigateByUrl('/');
+                        this.loadingBtn.set(false);
+                    }
                 },
             });
             this.loginFormGroup.reset();

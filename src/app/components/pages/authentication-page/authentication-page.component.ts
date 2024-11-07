@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginFormComponent } from '../../login-form/login-form.component';
 import { TuiTabsModule } from '@taiga-ui/kit';
-import { RouterLinkActive, RouterOutlet } from '@angular/router';
 import { RegistrFormComponent } from '../../registr-form/registr-form.component';
+import { TuiAlertModule, TuiRootModule } from '@taiga-ui/core';
 
 @Component({
     selector: 'app-authentication-page',
@@ -12,9 +12,9 @@ import { RegistrFormComponent } from '../../registr-form/registr-form.component'
         CommonModule,
         LoginFormComponent,
         RegistrFormComponent,
+        TuiRootModule,
         TuiTabsModule,
-        RouterLinkActive,
-        RouterOutlet,
+        TuiAlertModule,
     ],
     templateUrl: './authentication-page.component.html',
     styleUrl: './authentication-page.component.less',
