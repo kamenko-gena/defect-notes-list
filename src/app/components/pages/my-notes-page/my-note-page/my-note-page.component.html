@@ -1,0 +1,59 @@
+<tui-root>
+    <div class="link-block tui-text_body-m">
+        <a
+            icon="tuiIconArrowLeft"
+            routerLink="/my-notes"
+            iconAlign="left"
+            tuiLink
+        >
+            Назад
+        </a>
+    </div>
+    @if (!isEditNoteMode()) {
+        <div class="note-page-content">
+            @if (foundNote) {
+                <h2>
+                    Раздел: <strong>{{ foundNote.section }}</strong>
+                </h2>
+                <h3>
+                    Название: <strong>{{ foundNote.equipName }}</strong>
+                </h3>
+                <ul>
+                    <li>Описание: {{ foundNote.faultDescript }}</li>
+                    <li>Устранено: {{ foundNote.isCompleted }}</li>
+                    @if (foundNote.isCompleted) {
+                        <li>
+                            Методика устранения:
+                            {{ foundNote.solutionDescript }}
+                        </li>
+                    }
+                </ul>
+                <h4>{{ foundNote.date }}</h4>
+
+                <div class="buttons-block">
+                    <button
+                        class="tuiIconButton"
+                        appearance="mono"
+                        tuiIconButton
+                        icon="tuiIconTrash2"
+                        (click)="deleteNote()"
+                    >
+                        Удалить
+                    </button>
+
+                    <button
+                        class="tuiIconButton"
+                        appearance="mono"
+                        tuiIconButton
+                        icon="tuiIconEdit"
+                        (click)="editNote()"
+                    >
+                        Изменить
+                    </button>
+                </div>
+            }
+        </div>
+    } @else {
+        <app-create-note-form [note]="foundNote"></app-create-note-form>
+    }
+</tui-root>
