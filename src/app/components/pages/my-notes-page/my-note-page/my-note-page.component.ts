@@ -15,7 +15,12 @@ import {
     TuiLinkModule,
     TuiRootModule,
 } from '@taiga-ui/core';
-import { TUI_PROMPT, TuiIslandModule, TuiPromptModule } from '@taiga-ui/kit';
+import {
+    TUI_PROMPT,
+    TuiBadgeModule,
+    TuiIslandModule,
+    TuiPromptModule,
+} from '@taiga-ui/kit';
 import { tap } from 'rxjs';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { CreateNoteFormComponent } from 'src/app/components/create-note-form/create-note-form.component';
@@ -31,6 +36,7 @@ import { CreateNoteFormComponent } from 'src/app/components/create-note-form/cre
         TuiIslandModule,
         TuiPromptModule,
         TuiLinkModule,
+        TuiBadgeModule,
         RouterLink,
         CreateNoteFormComponent,
     ],
