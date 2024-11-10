@@ -105,12 +105,12 @@ export class LoginFormComponent {
                                 status: 'success',
                             })
                             .subscribe();
-                        this.router.navigateByUrl('/my-notes');
                         this.loadingBtn.set(false);
+                        this.loginFormGroup.reset();
+                        this.router.navigateByUrl('/my-notes');
                     }
                 },
             });
-            this.loginFormGroup.reset();
         }
     }
 }
