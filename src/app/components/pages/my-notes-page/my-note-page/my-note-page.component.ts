@@ -21,7 +21,7 @@ import {
     TuiIslandModule,
     TuiPromptModule,
 } from '@taiga-ui/kit';
-import { tap } from 'rxjs';
+import { take, tap } from 'rxjs';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { CreateNoteFormComponent } from 'src/app/components/create-note-form/create-note-form.component';
 
@@ -54,7 +54,7 @@ export class MyNotePageComponent implements OnInit {
     foundNote!: NoteInterface;
 
     ngOnInit(): void {
-        this.route.data.subscribe((data) => {
+        this.route.data.pipe(take(1)).subscribe((data) => {
             if (!data['note']) {
                 this.router.navigateByUrl('**');
                 return;
@@ -83,6 +83,7 @@ export class MyNotePageComponent implements OnInit {
                         this.router.navigateByUrl('/my-notes');
                     }
                 }),
+                take(1),
             )
             .subscribe();
     }

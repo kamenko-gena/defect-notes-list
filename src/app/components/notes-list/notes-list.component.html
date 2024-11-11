@@ -1,5 +1,5 @@
 <div class="table">
-    <table tuiTableFilters tuiTable [style.width.rem]="58">
+    <table class="tui-table" tuiTableFilters tuiTable>
         <thead>
             <tr tuiThGroup>
                 @for (colName of tableColName; track colName) {
@@ -13,18 +13,12 @@
                     <td tuiTd>{{ note.section }}</td>
                     <td tuiTd>{{ note.equipName }}</td>
                     <td tuiTd>
-                        <ng-container>
-                            <tui-badge
-                                [status]="
-                                    note.isCompleted ? 'success' : 'error'
-                                "
-                                [value]="
-                                    note.isCompleted
-                                        ? 'Устранено'
-                                        : 'Нет решения'
-                                "
-                            ></tui-badge>
-                        </ng-container>
+                        <tui-badge
+                            [status]="note.isCompleted ? 'success' : 'error'"
+                            [value]="
+                                note.isCompleted ? 'Устранено' : 'Нет решения'
+                            "
+                        ></tui-badge>
                     </td>
                     <td tuiTd>{{ note.date.join('.') }}</td>
                     <td tuiTd>

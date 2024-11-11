@@ -10,6 +10,7 @@ import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiSvgModule } from '@taiga-ui/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-not-found-page',
@@ -29,6 +30,7 @@ export class NotFoundPageComponent implements OnInit {
             .get(`assets/not-found-page.svg`, {
                 responseType: 'text',
             })
+            .pipe(take(1))
             .subscribe((value) => {
                 this.notFoundPageImg.set(
                     this.domSanitizer.bypassSecurityTrustHtml(value),

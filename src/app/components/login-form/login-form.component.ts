@@ -27,6 +27,7 @@ import {
 } from '@taiga-ui/kit';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-login-form',
@@ -82,35 +83,40 @@ export class LoginFormComponent {
 
     submitForm() {
         this.loadingBtn.set(true);
-        if (this.loginFormGroup.valid) {
-            const loginFormValue = this.loginFormGroup.getRawValue();
-
-            const email = loginFormValue.email ?? '';
-            const password = loginFormValue.password ?? '';
-
-            this.authService.login(email, password).subscribe({
-                next: (value) => {
-                    if (value === null) {
-                        this.alerts
-                            .open('Ошибка входа', {
-                                label: 'Неверный логин и(или) пароль!',
-                                status: 'error',
-                            })
-                            .subscribe();
-                        this.loadingBtn.set(false);
-                    } else {
-                        this.alerts
-                            .open('Успешный вход!', {
-                                label: 'Подтверждено.',
-                                status: 'success',
-                            })
-                            .subscribe();
-                        this.loadingBtn.set(false);
-                        this.loginFormGroup.reset();
-                        this.router.navigateByUrl('/my-notes');
-                    }
-                },
-            });
+        if (this.loginFormGroup.invalid) {
+            this.loadingBtn.set(false);
+            return;
         }
+
+        const loginFormValue = this.loginFormGroup.getRawValue();
+        const email = loginFormValue.email ?? '';
+        const password = loginFormValue.password ?? '';
+
+        this.authService.login(email, password).subscribe({
+            next: (value) => {
+                if (value === null) {
+                    this.alerts
+                        .open('Ошибка входа', {
+                            label: 'Неверный логин и(или) пароль!',
+                            status: 'error',
+                        })
+                        .pipe(take(1))
+                        .subscribe();
+                    this.loadingBtn.set(false);
+                    return;
+                }
+
+                this.alerts
+                    .open('Успешный вход!', {
+                        label: 'Подтверждено.',
+                        status: 'success',
+                    })
+                    .pipe(take(1))
+                    .subscribe();
+                this.loadingBtn.set(false);
+                this.loginFormGroup.reset();
+                this.router.navigateByUrl('/my-notes');
+            },
+        });
     }
 }

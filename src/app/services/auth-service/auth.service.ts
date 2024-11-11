@@ -6,7 +6,7 @@ import {
     updateProfile,
     UserCredential,
 } from '@angular/fire/auth';
-import { catchError, from, Observable, of, tap } from 'rxjs';
+import { catchError, from, Observable, of, take, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -18,13 +18,17 @@ export class AuthService {
         email: string,
         username: string,
         password: string,
-    ): Observable<UserCredential> {
+    ): Observable<UserCredential | null> {
         return from(
             createUserWithEmailAndPassword(this.firebaseAuth, email, password),
         ).pipe(
             tap((response) => {
                 updateProfile(response.user, { displayName: username });
             }),
+            catchError(() => {
+                return of(null);
+            }),
+            take(1),
         );
     }
 
@@ -35,6 +39,7 @@ export class AuthService {
             catchError(() => {
                 return of(null);
             }),
+            take(1),
         );
     }
 }

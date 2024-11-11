@@ -8,7 +8,7 @@ import {
     Firestore,
     updateDoc,
 } from '@angular/fire/firestore';
-import { catchError, from, map, Observable, of } from 'rxjs';
+import { catchError, from, map, Observable, of, take } from 'rxjs';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
 
 @Injectable({
@@ -30,6 +30,7 @@ export class FirebaseStorageService {
                 (notes: NoteInterface[]) =>
                     notes.find((note) => note.id === noteId) || null,
             ),
+            take(1),
         );
     }
 
@@ -39,6 +40,7 @@ export class FirebaseStorageService {
             catchError(() => {
                 return of(null);
             }),
+            take(1),
         );
     }
 
@@ -48,6 +50,7 @@ export class FirebaseStorageService {
             catchError(() => {
                 return of(null);
             }),
+            take(1),
         );
     }
 
@@ -57,6 +60,7 @@ export class FirebaseStorageService {
             catchError(() => {
                 return of(null);
             }),
+            take(1),
         );
     }
 }

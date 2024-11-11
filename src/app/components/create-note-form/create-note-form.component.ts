@@ -35,6 +35,7 @@ import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-
 import { NoteInterface } from 'src/app/interfaces/note-interface';
 import { Router, RouterLink } from '@angular/router';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
+import { take } from 'rxjs';
 
 const NOTE_SECTIONS = [
     'Пожарная автоматика',
@@ -108,43 +109,50 @@ export class CreateNoteFormComponent implements OnInit {
     }
 
     submitForm() {
-        if (this.noteFormGroup.valid) {
-            this.alerts
-                .open('Заметка создана!', {
-                    label: 'Готово!',
-                    status: 'success',
-                })
-                .subscribe();
-            this.firebaseStorageService.addNoteToStorage({
+        if (this.noteFormGroup.invalid) {
+            tuiMarkControlAsTouchedAndValidate(this.noteFormGroup);
+            return;
+        }
+
+        this.alerts
+            .open('Заметка создана!', {
+                label: 'Готово!',
+                status: 'success',
+            })
+            .pipe(take(1))
+            .subscribe();
+        this.firebaseStorageService
+            .addNoteToStorage({
                 ...this.noteFormGroup.value,
                 date: [
                     this.currentDate.getDate(),
                     this.currentDate.getMonth() + 1,
                     this.currentDate.getFullYear(),
                 ],
-            } as NoteInterface);
+            } as NoteInterface)
+            .subscribe();
 
-            this.noteFormGroup.reset();
-        } else {
-            tuiMarkControlAsTouchedAndValidate(this.noteFormGroup);
-        }
+        this.noteFormGroup.reset();
     }
 
     updateForm() {
-        if (this.note && this.noteFormGroup.valid) {
-            this.firebaseStorageService
-                .updateNote(this.note.id, this.noteFormGroup.value)
-                .subscribe({
-                    complete: () => {
-                        this.alerts
-                            .open('Заметка изменена', {
-                                label: 'Готово!',
-                                status: 'info',
-                            })
-                            .subscribe();
-                        this.router.navigateByUrl('/my-notes');
-                    },
-                });
+        if (!this.note || this.noteFormGroup.invalid) {
+            return;
         }
+
+        this.firebaseStorageService
+            .updateNote(this.note.id, this.noteFormGroup.value)
+            .subscribe({
+                complete: () => {
+                    this.alerts
+                        .open('Заметка изменена', {
+                            label: 'Готово!',
+                            status: 'info',
+                        })
+                        .pipe(take(1))
+                        .subscribe();
+                    this.router.navigateByUrl('/my-notes');
+                },
+            });
     }
 }

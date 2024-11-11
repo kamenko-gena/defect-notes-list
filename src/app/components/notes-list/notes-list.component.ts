@@ -12,8 +12,7 @@ import { FirebaseStorageService } from 'src/app/services/firebase-storage-servic
 import { NoteInterface } from 'src/app/interfaces/note-interface';
 import { RouterLink } from '@angular/router';
 import { TuiTableFiltersModule, TuiTableModule } from '@taiga-ui/addon-table';
-
-const TABLE_COL_NAME_DATA = ['Раздел', 'Название', 'Статус', 'Дата', 'Ссылка'];
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-notes-list',
@@ -33,13 +32,16 @@ const TABLE_COL_NAME_DATA = ['Раздел', 'Название', 'Статус',
 })
 export class NotesListComponent implements OnInit {
     private readonly firebaseStorageService = inject(FirebaseStorageService);
-    readonly tableColName = TABLE_COL_NAME_DATA;
+    readonly tableColName = ['Раздел', 'Название', 'Статус', 'Дата', 'Ссылка'];
 
     notesFromFirebase = signal<NoteInterface[]>([]);
 
     ngOnInit(): void {
-        this.firebaseStorageService.getNotes().subscribe((notes) => {
-            this.notesFromFirebase.set(notes);
-        });
+        this.firebaseStorageService
+            .getNotes()
+            .pipe(take(1))
+            .subscribe((notes) => {
+                this.notesFromFirebase.set(notes);
+            });
     }
 }
