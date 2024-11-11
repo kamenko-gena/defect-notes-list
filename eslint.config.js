@@ -8,7 +8,7 @@ module.exports = [
   ...nx.configs['flat/javascript'],
   ...nx.configs['flat/typescript'],
   {
-    ignores: ['**/dist', '**/*.config.js', '**/src/assets/*'],
+    ignores: ['**/dist', '**/*.config.js'],
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
