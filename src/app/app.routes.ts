@@ -4,6 +4,8 @@ import { AuthenticationPageComponent } from './components/pages/authentication-p
 import { MyNotesCreatePageComponent } from './components/pages/my-notes-page/my-notes-create-page/my-notes-create-page.component';
 import { HomePageComponent } from './components/pages/home-page/home-page.component';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
+import { MyNotePageComponent } from './components/pages/my-notes-page/my-note-page/my-note-page.component';
+import { noteIdResolver } from './resolvers/note-id.resolver';
 
 export const appRoutes: Route[] = [
     {
@@ -12,6 +14,11 @@ export const appRoutes: Route[] = [
             {
                 path: 'create',
                 component: MyNotesCreatePageComponent,
+            },
+            {
+                path: ':noteId',
+                component: MyNotePageComponent,
+                resolve: { note: noteIdResolver },
             },
             {
                 path: '',

@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    Input,
+    OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormControl,
@@ -22,11 +28,14 @@ import {
     TuiButtonModule,
     TuiErrorModule,
     TuiGroupModule,
+    TuiLinkModule,
 } from '@taiga-ui/core';
 import { tuiMarkControlAsTouchedAndValidate } from '@taiga-ui/cdk';
 import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-descript-validator/solution-descript-validator.directive';
-import { LocalStorageService } from 'src/app/services/local-storage-service/local-storage.service';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
+import { Router, RouterLink } from '@angular/router';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
+import { take } from 'rxjs';
 
 const NOTE_SECTIONS = [
     'Пожарная автоматика',
@@ -57,6 +66,8 @@ type Section = NoteSections[number];
         TuiAlertModule,
         TuiInputModule,
         SolutionDescriptValidatorDirective,
+        RouterLink,
+        TuiLinkModule,
     ],
     templateUrl: './create-note-form.component.html',
     styleUrl: './create-note-form.component.less',
@@ -72,46 +83,76 @@ type Section = NoteSections[number];
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateNoteFormComponent {
+export class CreateNoteFormComponent implements OnInit {
     private readonly alerts: TuiAlertService = inject(TuiAlertService);
-    private readonly localStorageService = inject(LocalStorageService);
+    private readonly firebaseStorageService = inject(FirebaseStorageService);
+    private readonly router = inject(Router);
 
     readonly currentDate = CURRENT_DATE;
     readonly noteSection = NOTE_SECTIONS;
+    @Input() note: NoteInterface | null = null;
 
     readonly noteFormGroup = new FormGroup({
-        section: new FormControl<Section | null>(null, [Validators.required]),
-        equipName: new FormControl<string | null>('', {
+        section: new FormControl<Section>('', [Validators.required]),
+        equipName: new FormControl<string>('', {
             validators: [Validators.required, Validators.maxLength(50)],
         }),
-        faultDescript: new FormControl<string | null>('', {
+        faultDescript: new FormControl<string>('', {
             validators: [Validators.required, Validators.maxLength(500)],
         }),
-        solutionCheck: new FormControl<boolean>(false),
+        isCompleted: new FormControl<boolean>(false),
         solutionDescript: new FormControl<string | null>(null),
     });
 
-    submitForm() {
-        if (this.noteFormGroup.valid) {
-            this.alerts
-                .open('Заметка создана!', {
-                    label: 'Готово!',
-                    status: 'success',
-                })
-                .subscribe();
+    ngOnInit(): void {
+        if (this.note) this.noteFormGroup.patchValue(this.note);
+    }
 
-            this.localStorageService.addNote({
-                ...this.noteFormGroup.value,
-                date:
-                    this.currentDate.getDate() +
-                    '.' +
-                    (this.currentDate.getMonth() + 1) +
-                    '.' +
-                    this.currentDate.getFullYear(),
-            } as NoteInterface);
-            this.noteFormGroup.reset();
-        } else {
+    submitForm() {
+        if (this.noteFormGroup.invalid) {
             tuiMarkControlAsTouchedAndValidate(this.noteFormGroup);
+            return;
         }
+
+        this.alerts
+            .open('Заметка создана!', {
+                label: 'Готово!',
+                status: 'success',
+            })
+            .pipe(take(1))
+            .subscribe();
+        this.firebaseStorageService
+            .addNoteToStorage({
+                ...this.noteFormGroup.value,
+                date: [
+                    this.currentDate.getDate(),
+                    this.currentDate.getMonth() + 1,
+                    this.currentDate.getFullYear(),
+                ],
+            } as NoteInterface)
+            .subscribe();
+
+        this.noteFormGroup.reset();
+    }
+
+    updateForm() {
+        if (!this.note || this.noteFormGroup.invalid) {
+            return;
+        }
+
+        this.firebaseStorageService
+            .updateNote(this.note.id, this.noteFormGroup.value)
+            .subscribe({
+                complete: () => {
+                    this.alerts
+                        .open('Заметка изменена', {
+                            label: 'Готово!',
+                            status: 'info',
+                        })
+                        .pipe(take(1))
+                        .subscribe();
+                    this.router.navigateByUrl('/my-notes');
+                },
+            });
     }
 }

@@ -1,7 +1,7 @@
 <form
     class="note-form-group"
     [formGroup]="noteFormGroup"
-    (submit)="submitForm()"
+    (submit)="note ? updateForm() : submitForm()"
 >
     <tui-select formControlName="section">
         Раздел
@@ -35,18 +35,19 @@
     </div>
 
     <div
+        class="tui-form__row"
         appSolutionDescriptValidator
-        [solutionCheckControl]="noteFormGroup.controls.solutionCheck"
+        [isCompletedControl]="noteFormGroup.controls.isCompleted"
         [solutionDescriptControl]="noteFormGroup.controls.solutionDescript"
     >
         <div class="tui-form__row">
-            <tui-checkbox-labeled formControlName="solutionCheck">
+            <tui-checkbox-labeled formControlName="isCompleted">
                 Неисправность устранена
             </tui-checkbox-labeled>
         </div>
 
         <div class="tui-form__row">
-            @if (noteFormGroup.controls.solutionCheck.value) {
+            @if (noteFormGroup.controls.isCompleted.value) {
                 <div class="tui-form__row">
                     <tui-textarea formControlName="solutionDescript"
                         >Методика устранения неисправности</tui-textarea
@@ -67,7 +68,7 @@
             type="submit"
             [disabled]="!noteFormGroup.valid"
         >
-            Создать заметку
+            {{ note ? 'Изменить' : 'Создать' }}
         </button>
     </div>
 </form>

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormControl,
@@ -22,6 +27,7 @@ import {
 } from '@taiga-ui/kit';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-login-form',
@@ -63,7 +69,8 @@ import { Router } from '@angular/router';
 export class LoginFormComponent {
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-    private readonly alerts = inject(TuiAlertService);
+    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    readonly loadingBtn = signal(false);
 
     readonly loginFormGroup = new FormGroup({
         email: new FormControl<string | null>('', {
@@ -75,22 +82,41 @@ export class LoginFormComponent {
     });
 
     submitForm() {
-        if (this.loginFormGroup.valid) {
-            const loginFormValue = this.loginFormGroup.getRawValue();
-
-            const email = loginFormValue.email ?? '';
-            const password = loginFormValue.password ?? '';
-
-            this.authService.login(email, password).subscribe({
-                next: () => {
-                    alert('Успешный вход!');
-                    this.router.navigateByUrl('/');
-                },
-                error: (err) => {
-                    alert(err.code);
-                },
-            });
-            this.loginFormGroup.reset();
+        this.loadingBtn.set(true);
+        if (this.loginFormGroup.invalid) {
+            this.loadingBtn.set(false);
+            return;
         }
+
+        const loginFormValue = this.loginFormGroup.getRawValue();
+        const email = loginFormValue.email ?? '';
+        const password = loginFormValue.password ?? '';
+
+        this.authService.login(email, password).subscribe({
+            next: (value) => {
+                if (value === null) {
+                    this.alerts
+                        .open('Ошибка входа', {
+                            label: 'Неверный логин и(или) пароль!',
+                            status: 'error',
+                        })
+                        .pipe(take(1))
+                        .subscribe();
+                    this.loadingBtn.set(false);
+                    return;
+                }
+
+                this.alerts
+                    .open('Успешный вход!', {
+                        label: 'Подтверждено.',
+                        status: 'success',
+                    })
+                    .pipe(take(1))
+                    .subscribe();
+                this.loadingBtn.set(false);
+                this.loginFormGroup.reset();
+                this.router.navigateByUrl('/my-notes');
+            },
+        });
     }
 }

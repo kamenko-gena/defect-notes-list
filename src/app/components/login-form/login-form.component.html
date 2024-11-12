@@ -28,6 +28,7 @@
             class="tui-form__button"
             tuiButton
             type="submit"
+            [showLoader]="loadingBtn()"
             [disabled]="!loginFormGroup.valid"
         >
             Войти

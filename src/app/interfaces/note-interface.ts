@@ -1,5 +1,6 @@
 export interface NoteInterface {
-    date: string;
+    id: string;
+    date: [number, number, number];
     section:
         | 'Пожарная автоматика'
         | 'Охранная сигнализация'
@@ -7,6 +8,6 @@ export interface NoteInterface {
         | 'Видеонаблюдение';
     equipName: string;
     faultDescript: string;
-    solutionCheck: boolean;
+    isCompleted: boolean;
     solutionDescript: string | null;
 }

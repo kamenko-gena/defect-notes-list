@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormControl,
@@ -23,6 +28,7 @@ import {
 import { passwordsMatchValidator } from 'src/app/models/passwords-match-validator';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'app-registr-form',
@@ -64,16 +70,17 @@ import { Router } from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrFormComponent {
-    authService = inject(AuthService);
-    router = inject(Router);
-    alerts = inject(TuiAlertService);
+    private readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
+    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    readonly loadingBtn = signal(false);
 
     readonly registrationFormGroup = new FormGroup(
         {
             userName: new FormControl<string | null>('', {
                 validators: [
                     Validators.required,
-                    Validators.minLength(6),
+                    Validators.minLength(3),
                     Validators.pattern('[A-Za-z0-9]*'),
                 ],
             }),
@@ -92,33 +99,42 @@ export class RegistrFormComponent {
     );
 
     submitForm() {
-        if (this.registrationFormGroup.valid) {
-            const registrationFormValue =
-                this.registrationFormGroup.getRawValue();
+        this.loadingBtn.set(true);
+        if (this.registrationFormGroup.invalid) {
+            this.loadingBtn.set(false);
+            return;
+        }
 
-            const email = registrationFormValue.email ?? '';
-            const userName = registrationFormValue.userName ?? '';
-            const password = registrationFormValue.password ?? '';
+        const registrationFormValue = this.registrationFormGroup.getRawValue();
+        const email = registrationFormValue.email ?? '';
+        const userName = registrationFormValue.userName ?? '';
+        const password = registrationFormValue.password ?? '';
 
-            this.authService.registration(email, userName, password).subscribe({
-                next: () => {
-                    this.alerts.open('Успешная регистрация!', {
-                        label: 'Успех',
-                        status: 'success',
-                    });
-                    this.router.navigateByUrl('/');
-                },
-                error: (err) => {
-                    alert(err.code);
+        this.authService.registration(email, userName, password).subscribe({
+            next: (user) => {
+                if (user == null) {
                     this.alerts
-                        .open('Ошбика!', {
-                            label: 'Ошибка регистрации!',
+                        .open('Указан неверный Email!', {
+                            label: `Ошибка!`,
                             status: 'error',
                         })
+                        .pipe(take(1))
                         .subscribe();
-                },
-            });
-            this.registrationFormGroup.reset();
-        }
+                    this.loadingBtn.set(false);
+                    return;
+                }
+
+                this.alerts
+                    .open('Успешная регистрация!', {
+                        label: 'Успех',
+                        status: 'success',
+                    })
+                    .pipe(take(1))
+                    .subscribe();
+                this.loadingBtn.set(false);
+                this.router.navigateByUrl('/my-notes');
+            },
+        });
+        this.registrationFormGroup.reset();
     }
 }
