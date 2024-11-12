@@ -3,16 +3,20 @@ import {
     Auth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signOut,
     updateProfile,
+    user,
     UserCredential,
 } from '@angular/fire/auth';
-import { catchError, from, Observable, of, take, tap } from 'rxjs';
+import { catchError, from, map, Observable, of, take, tap } from 'rxjs';
+import { UserInterface } from 'src/app/interfaces/user-interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     private readonly firebaseAuth = inject(Auth);
+    readonly user$ = user(this.firebaseAuth);
 
     registration(
         email: string,
@@ -38,6 +42,30 @@ export class AuthService {
         ).pipe(
             catchError(() => {
                 return of(null);
+            }),
+            take(1),
+        );
+    }
+
+    logout(): Observable<void | null> {
+        return from(signOut(this.firebaseAuth)).pipe(
+            catchError(() => {
+                return of(null);
+            }),
+        );
+    }
+
+    getCurrentUser(): Observable<UserInterface | null> {
+        return this.user$.pipe(
+            map((currentUser) => {
+                return currentUser &&
+                    currentUser.email &&
+                    currentUser.displayName
+                    ? {
+                          email: currentUser.email,
+                          username: currentUser.displayName,
+                      }
+                    : null;
             }),
             take(1),
         );

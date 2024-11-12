@@ -1,33 +1,29 @@
-<div class="table">
-    <table class="tui-table" tuiTableFilters tuiTable>
-        <thead>
-            <tr tuiThGroup>
-                @for (colName of tableColName; track colName) {
-                    <th tuiTh [resizable]="true">{{ colName }}</th>
-                }
-            </tr>
-        </thead>
-        <tbody tuiTbody>
-            @for (note of notesFromFirebase(); track note) {
-                <tr>
-                    <td tuiTd>{{ note.section }}</td>
-                    <td tuiTd>{{ note.equipName }}</td>
-                    <td tuiTd>
-                        <tui-badge
-                            [status]="note.isCompleted ? 'success' : 'error'"
-                            [value]="
-                                note.isCompleted ? 'Устранено' : 'Нет решения'
-                            "
-                        ></tui-badge>
-                    </td>
-                    <td tuiTd>{{ note.date.join('.') }}</td>
-                    <td tuiTd>
-                        <a [routerLink]="['/my-notes', note.id]" tuiLink>
-                            Подробнее
-                        </a>
-                    </td>
-                </tr>
+<table class="tui-table" tuiTableFilters tuiTable>
+    <thead>
+        <tr tuiThGroup>
+            @for (colName of tableColName; track colName) {
+                <th tuiTh [resizable]="true">{{ colName }}</th>
             }
-        </tbody>
-    </table>
-</div>
+        </tr>
+    </thead>
+    <tbody tuiTbody>
+        @for (note of notesFromFirebase(); track note) {
+            <tr>
+                <td tuiTd>{{ note.section }}</td>
+                <td tuiTd>{{ note.equipName }}</td>
+                <td tuiTd>
+                    <tui-badge
+                        [status]="note.isCompleted ? 'success' : 'error'"
+                        [value]="note.isCompleted ? 'Устранено' : 'Нет решения'"
+                    ></tui-badge>
+                </td>
+                <td tuiTd>{{ note.date.join('.') }}</td>
+                <td tuiTd>
+                    <a [routerLink]="['/my-notes', note.id]" tuiLink>
+                        Подробнее
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

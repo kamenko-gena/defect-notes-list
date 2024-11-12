@@ -3,20 +3,23 @@ default:
 
 stages:
   - install
-  - build
-  - validate
-
+  - eslint
+  - prettier
+  
 install:
   stage: install
   script:
-    - echo 'install dependencies...'
+    - echo 'Install dependencies...'
+    - npm ci
 
-build:
-  stage: build
+eslint:
+  stage: eslint
   script:
-    - echo 'building project...'
+    - echo 'Run ESlint...'
+    - npm run lint
 
-validate:
-  stage: validate
+prettier:
+  stage: prettier
   script:
-    - echo 'validation...'
+    - echo 'Run Prettier...'
+    - npm run prettier

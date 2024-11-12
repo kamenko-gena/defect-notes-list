@@ -81,7 +81,7 @@ export class RegistrFormComponent {
                 validators: [
                     Validators.required,
                     Validators.minLength(3),
-                    Validators.pattern('[A-Za-z0-9]*'),
+                    Validators.pattern('[A-ZА-Яa-zа-я]*'),
                 ],
             }),
             email: new FormControl<string | null>('', {
