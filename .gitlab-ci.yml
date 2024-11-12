@@ -11,6 +11,11 @@ install:
   script:
     - echo 'Install dependencies...'
     - npm ci
+  artifacts:
+    paths:
+    - node_modules/
+    expire_in: 1h
+
 
 eslint:
   stage: eslint
