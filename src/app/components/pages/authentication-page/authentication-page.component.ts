@@ -35,29 +35,35 @@ export class AuthenticationPageComponent implements OnInit {
     activeTab = signal(1);
 
     ngOnInit(): void {
-        this.authService.getCurrentUser().subscribe((currentUser) => {
-            if (currentUser) {
+        this.authService
+            .getCurrentUser()
+            .pipe(take(1))
+            .subscribe((currentUser) => {
+                if (currentUser) {
+                    this.alerts
+                        .open(
+                            `Вы уже вошли под именем: <strong>${currentUser.username}</strong>`,
+                            {
+                                label: 'Учетная запись активна',
+                                status: 'info',
+                            },
+                        )
+                        .pipe(take(1))
+                        .subscribe();
+                    return;
+                }
+
                 this.alerts
                     .open(
-                        `Вход выполнен под именем: <strong>${currentUser.username}</strong>`,
+                        'Необхоимо войти в учетную запись или создать новую.',
                         {
-                            label: 'Учетная запись активна',
+                            label: 'Войдите или зарегистрируйтесь!',
                             status: 'info',
                         },
                     )
                     .pipe(take(1))
                     .subscribe();
-                return;
-            }
-
-            this.alerts
-                .open('Необхоимо войти в учетную запись или создать новую.', {
-                    label: 'Войдите или зарегистрируйтесь!',
-                    status: 'info',
-                })
-                .pipe(take(1))
-                .subscribe();
-        });
+            });
     }
 
     onTabClick(tab: number): void {

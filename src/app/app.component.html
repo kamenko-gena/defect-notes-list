@@ -1,8 +1,10 @@
 <tui-root>
     <div class="main-content">
         <app-navigation class="nav-container"></app-navigation>
-        <div class="content">
-            <router-outlet />
-        </div>
+        <tui-scrollbar class="content" [hidden]="true">
+            <div class="content">
+                <router-outlet />
+            </div>
+        </tui-scrollbar>
     </div>
 </tui-root>

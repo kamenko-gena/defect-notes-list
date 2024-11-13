@@ -67,7 +67,6 @@ export class AuthService {
                       }
                     : null;
             }),
-            take(1),
         );
     }
 }

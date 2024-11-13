@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 export const registerUserGuard: CanActivateFn = () => {
@@ -15,5 +15,6 @@ export const registerUserGuard: CanActivateFn = () => {
                 return router.parseUrl('/authentication');
             }
         }),
+        take(1),
     );
 };

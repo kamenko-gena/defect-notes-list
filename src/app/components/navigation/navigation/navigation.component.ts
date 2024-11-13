@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    OnDestroy,
+    OnInit,
+    signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     TuiButtonModule,
@@ -7,8 +14,13 @@ import {
     TuiLinkModule,
 } from '@taiga-ui/core';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
-import { take, tap } from 'rxjs';
-import { TUI_PROMPT, TuiPromptModule } from '@taiga-ui/kit';
+import { Subscription, take, tap } from 'rxjs';
+import {
+    TUI_PROMPT,
+    TuiAvatarModule,
+    tuiAvatarOptionsProvider,
+    TuiPromptModule,
+} from '@taiga-ui/kit';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
@@ -21,17 +33,45 @@ import { Router, RouterModule } from '@angular/router';
         TuiDialogModule,
         TuiButtonModule,
         RouterModule,
+        TuiAvatarModule,
     ],
     templateUrl: './navigation.component.html',
     styleUrl: './navigation.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        tuiAvatarOptionsProvider({
+            size: 'm',
+            autoColor: true,
+        }),
+    ],
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit, OnDestroy {
     private readonly authService = inject(AuthService);
     private readonly dialogs: TuiDialogService = inject(TuiDialogService);
     private readonly router = inject(Router);
+    private subscription: Subscription = new Subscription();
+    currentUserName = signal<string>('');
 
-    logout() {
+    ngOnInit(): void {
+        this.subscription = this.authService.getCurrentUser().subscribe({
+            next: (currentUser) => {
+                if (!currentUser) {
+                    this.currentUserName.set('');
+                    return;
+                }
+                this.currentUserName.set(currentUser.username);
+            },
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    logout(): void {
+        if (this.currentUserName() == '') {
+            return;
+        }
         this.dialogs
             .open<boolean>(TUI_PROMPT, {
                 label: 'Выйти?',
