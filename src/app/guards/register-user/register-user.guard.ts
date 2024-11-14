@@ -9,11 +9,7 @@ export const registerUserGuard: CanActivateFn = () => {
 
     return authService.getCurrentUser().pipe(
         map((currentUser) => {
-            if (currentUser) {
-                return true;
-            } else {
-                return router.parseUrl('/authentication');
-            }
+            return currentUser ? true : router.parseUrl('/authentication');
         }),
         take(1),
     );

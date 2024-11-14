@@ -1,5 +1,5 @@
-@if (currentUserName() !== '') {
-    <tui-avatar [text]="currentUserName()" class="tui-avatar"></tui-avatar>
+@if (currentUserName()) {
+    <tui-avatar [text]="currentUserName()" class="avatar"></tui-avatar>
 }
 
 <div class="nav-container tui-skeleton_light">
@@ -20,7 +20,7 @@
     ></a>
 </div>
 
-@if (currentUserName() !== '') {
+@if (currentUserName()) {
     <button
         appearance="icon"
         icon="tuiIconLogOutLarge"
