@@ -1,9 +1,44 @@
 <div class="table-container">
-    <table class="tui-table" tuiTableFilters tuiTable>
+    <div tuiGroup class="group" [collapsed]="true">
+        <form [formGroup]="filterSectionGroup">
+            <tui-select
+                tuiTextfieldSize="s"
+                formControlName="filterSectionName"
+            >
+                Раздел
+                <input placeholder="Выберите раздел" tuiTextfield />
+                <tui-data-list-wrapper
+                    *tuiDataList
+                    [items]="noteSection"
+                ></tui-data-list-wrapper>
+            </tui-select>
+        </form>
+        <button
+            appearance="outline"
+            size="s"
+            tuiButton
+            type="button"
+            (click)="filterData()"
+        >
+            Дата
+        </button>
+        <button
+            appearance="outline"
+            size="s"
+            tuiButton
+            type="button"
+            (click)="filterComplited()"
+        >
+            Статус
+        </button>
+    </div>
+    <table class="tui-table" tuiTable>
         <thead>
             <tr tuiThGroup>
                 @for (colName of tableColName; track colName) {
-                    <th tuiTh [resizable]="true">{{ colName }}</th>
+                    <th tuiTh [resizable]="true">
+                        <strong>{{ colName }}</strong>
+                    </th>
                 }
             </tr>
         </thead>
