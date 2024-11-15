@@ -82,7 +82,7 @@ export class NotesListComponent implements OnInit {
         this.getNotes();
     }
 
-    getNotes(): void {
+    private getNotes(): void {
         this.firebaseStorageService
             .getNotes()
             .pipe(take(1))

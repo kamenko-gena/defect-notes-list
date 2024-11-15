@@ -16,7 +16,7 @@ import { UserInterface } from 'src/app/interfaces/user-interface';
 })
 export class AuthService {
     private readonly firebaseAuth = inject(Auth);
-    readonly user$ = user(this.firebaseAuth);
+    private readonly user$ = user(this.firebaseAuth);
 
     registration(
         email: string,
