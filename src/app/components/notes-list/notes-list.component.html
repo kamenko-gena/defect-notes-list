@@ -1,9 +1,44 @@
 <div class="table-container">
-    <table class="table-content" tuiTableFilters tuiTable>
+    <div class="filter-buttons-block">
+        <div class="select-container">
+            <tui-select tuiTextfieldSize="s" [formControl]="filterSectionName">
+                Раздел
+                <input placeholder="Выберите раздел" tuiTextfield />
+                <tui-data-list-wrapper
+                    *tuiDataList
+                    [items]="filterName"
+                    (click)="filterBySection()"
+                ></tui-data-list-wrapper>
+            </tui-select>
+        </div>
+        <button
+            class="filter-button"
+            appearance="flat"
+            size="s"
+            tuiButton
+            type="button"
+            (click)="filterByData()"
+        >
+            Дата
+        </button>
+        <button
+            class="filter-button"
+            appearance="flat"
+            size="s"
+            tuiButton
+            type="button"
+            (click)="filterByComplited()"
+        >
+            Статус
+        </button>
+    </div>
+    <table class="table-content" tuiTable>
         <thead>
             <tr tuiThGroup>
                 @for (colName of tableColName; track colName) {
-                    <th tuiTh [resizable]="true">{{ colName }}</th>
+                    <th tuiTh [resizable]="true">
+                        <strong>{{ colName }}</strong>
+                    </th>
                 }
             </tr>
         </thead>
@@ -19,6 +54,17 @@
                                 note.isCompleted ? 'Устранено' : 'Нет решения'
                             "
                         ></tui-badge>
+                    </td>
+                    <td tuiTd>
+                        <div class="author-block">
+                            <tui-avatar
+                                [autoColor]="true"
+                                [text]="note.author"
+                                class="avatar"
+                                size="xs"
+                            ></tui-avatar>
+                            {{ note.author }}
+                        </div>
                     </td>
                     <td tuiTd>{{ note.date.join('.') }}</td>
                     <td tuiTd>

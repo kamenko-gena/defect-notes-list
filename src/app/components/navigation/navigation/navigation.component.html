@@ -1,5 +1,9 @@
 @if (currentUserName()) {
-    <tui-avatar [text]="currentUserName()" class="avatar"></tui-avatar>
+    <tui-avatar
+        [autoColor]="true"
+        [text]="currentUserName()"
+        class="avatar"
+    ></tui-avatar>
 }
 
 <div class="nav-container tui-skeleton_light">

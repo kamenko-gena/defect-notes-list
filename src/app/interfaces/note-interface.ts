@@ -1,5 +1,6 @@
 export interface NoteInterface {
     id: string;
+    author: string;
     date: [number, number, number];
     section:
         | 'Пожарная автоматика'
