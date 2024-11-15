@@ -1,5 +1,16 @@
 <div class="table-container">
     <div class="filter-buttons-block">
+        <div class="select-container">
+            <tui-select tuiTextfieldSize="s" [formControl]="filterSectionName">
+                Раздел
+                <input placeholder="Выберите раздел" tuiTextfield />
+                <tui-data-list-wrapper
+                    *tuiDataList
+                    [items]="filterName"
+                    (click)="filterBySection()"
+                ></tui-data-list-wrapper>
+            </tui-select>
+        </div>
         <button
             class="filter-button"
             appearance="flat"
@@ -21,31 +32,12 @@
             Статус
         </button>
     </div>
-    <table class="tui-table" tuiTable>
+    <table class="table-content" tuiTable>
         <thead>
             <tr tuiThGroup>
                 @for (colName of tableColName; track colName) {
                     <th tuiTh [resizable]="true">
                         <strong>{{ colName }}</strong>
-                        @if (colName === 'Раздел') {
-                            <form [formGroup]="filterSectionGroup">
-                                <tui-select
-                                    tuiTextfieldSize="s"
-                                    formControlName="filterSectionName"
-                                >
-                                    Раздел
-                                    <input
-                                        placeholder="Выберите раздел"
-                                        tuiTextfield
-                                    />
-                                    <tui-data-list-wrapper
-                                        *tuiDataList
-                                        [items]="filterName"
-                                        (click)="filterBySection()"
-                                    ></tui-data-list-wrapper>
-                                </tui-select>
-                            </form>
-                        }
                     </th>
                 }
             </tr>
@@ -66,6 +58,7 @@
                     <td tuiTd>
                         <div class="author-block">
                             <tui-avatar
+                                [autoColor]="true"
                                 [text]="note.author"
                                 class="avatar"
                                 size="xs"

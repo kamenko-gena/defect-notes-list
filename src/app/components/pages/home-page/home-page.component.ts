@@ -23,7 +23,7 @@ import { RouterModule } from '@angular/router';
 export class HomePageComponent implements OnInit {
     private readonly domSanitizer = inject(DomSanitizer);
     private readonly httpClient = inject(HttpClient);
-    welcomeImg = signal<SafeHtml>('');
+    readonly welcomeImg = signal<SafeHtml>('');
 
     ngOnInit(): void {
         this.httpClient

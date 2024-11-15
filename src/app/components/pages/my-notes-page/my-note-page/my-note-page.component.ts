@@ -50,7 +50,7 @@ export class MyNotePageComponent implements OnInit {
     private readonly dialogs: TuiDialogService = inject(TuiDialogService);
     private readonly firebaseStorageService = inject(FirebaseStorageService);
 
-    isEditNoteMode = signal<boolean>(false);
+    readonly isEditNoteMode = signal<boolean>(false);
     foundNote!: NoteInterface;
 
     ngOnInit(): void {

@@ -32,7 +32,7 @@ export class AuthenticationPageComponent implements OnInit {
     private readonly alerts: TuiAlertService = inject(TuiAlertService);
     private readonly authService = inject(AuthService);
 
-    activeTab = signal(1);
+    readonly activeTab = signal(1);
 
     ngOnInit(): void {
         this.authService

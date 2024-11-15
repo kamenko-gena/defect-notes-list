@@ -23,12 +23,7 @@ import { NoteInterface } from 'src/app/interfaces/note-interface';
 import { RouterLink } from '@angular/router';
 import { TuiTableModule } from '@taiga-ui/addon-table';
 import { map, take } from 'rxjs';
-import {
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotesFilterService } from 'src/app/services/notes-filter-service/notes-filter.service';
 
 const FILTER_SECTION_NAME = [
@@ -79,13 +74,15 @@ export class NotesListComponent implements OnInit {
     private filterDataFlag = false;
     private filterComplitedFlag = false;
 
-    notesFromFirebase = signal<NoteInterface[]>([]);
+    readonly notesFromFirebase = signal<NoteInterface[]>([]);
 
-    readonly filterSectionGroup = new FormGroup({
-        filterSectionName: new FormControl<Section>('Все'),
-    });
+    readonly filterSectionName = new FormControl<Section>('Все');
 
     ngOnInit(): void {
+        this.getNotes();
+    }
+
+    getNotes(): void {
         this.firebaseStorageService
             .getNotes()
             .pipe(take(1))
@@ -120,15 +117,16 @@ export class NotesListComponent implements OnInit {
     }
 
     filterBySection(): void {
-        const sectionName = this.filterSectionGroup.value.filterSectionName;
-        if (sectionName === 'Все') return this.ngOnInit();
+        if (this.filterSectionName.value === 'Все') return this.getNotes();
 
         this.firebaseStorageService
             .getNotes()
             .pipe(
                 take(1),
                 map((notes) =>
-                    notes.filter((note) => note.section === sectionName),
+                    notes.filter(
+                        (note) => note.section === this.filterSectionName.value,
+                    ),
                 ),
             )
             .subscribe((sortedNotes) => {

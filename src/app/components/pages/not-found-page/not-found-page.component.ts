@@ -22,7 +22,7 @@ import { take } from 'rxjs';
 export class NotFoundPageComponent implements OnInit {
     private readonly domSanitizer = inject(DomSanitizer);
     private readonly httpClient = inject(HttpClient);
-    notFoundPageImg = signal<SafeHtml>('');
+    readonly notFoundPageImg = signal<SafeHtml>('');
 
     ngOnInit(): void {
         this.httpClient

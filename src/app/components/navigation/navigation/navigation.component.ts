@@ -50,7 +50,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private readonly dialogs: TuiDialogService = inject(TuiDialogService);
     private readonly router = inject(Router);
     private subscription: Subscription = new Subscription();
-    currentUserName = signal<string>('');
+    readonly currentUserName = signal<string>('');
 
     ngOnInit(): void {
         this.subscription = this.authService.getCurrentUser().subscribe({
