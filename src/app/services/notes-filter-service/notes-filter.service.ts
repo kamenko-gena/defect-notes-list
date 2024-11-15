@@ -24,7 +24,7 @@ export class NotesFilterService {
         completedFirst: boolean,
         notes: NoteInterface[],
     ): Observable<NoteInterface[]> {
-        const sortedNotes = notes.slice().sort((a, b) => {
+        const sortedNotes = notes.sort((a, b) => {
             return completedFirst
                 ? Number(a.isCompleted) - Number(b.isCompleted)
                 : Number(b.isCompleted) - Number(a.isCompleted);

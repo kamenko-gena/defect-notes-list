@@ -36,6 +36,7 @@ import { NoteInterface } from 'src/app/interfaces/note-interface';
 import { Router, RouterLink } from '@angular/router';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { take } from 'rxjs';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 const NOTE_SECTIONS = [
     'Пожарная автоматика',
@@ -86,8 +87,9 @@ type Section = NoteSections[number];
 export class CreateNoteFormComponent implements OnInit {
     private readonly alerts: TuiAlertService = inject(TuiAlertService);
     private readonly firebaseStorageService = inject(FirebaseStorageService);
+    private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-
+    private currentUserName = '';
     readonly currentDate = CURRENT_DATE;
     readonly noteSection = NOTE_SECTIONS;
     @Input() note: NoteInterface | null = null;
@@ -106,6 +108,12 @@ export class CreateNoteFormComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.note) this.noteFormGroup.patchValue(this.note);
+        this.authService
+            .getCurrentUser()
+            .pipe(take(1))
+            .subscribe((user) => {
+                if (user) this.currentUserName = user.username;
+            });
     }
 
     submitForm() {
@@ -129,6 +137,7 @@ export class CreateNoteFormComponent implements OnInit {
                     this.currentDate.getMonth() + 1,
                     this.currentDate.getFullYear(),
                 ],
+                author: this.currentUserName,
             } as NoteInterface)
             .subscribe();
 

@@ -1,33 +1,22 @@
 <div class="table-container">
-    <div tuiGroup class="group" [collapsed]="true">
-        <form [formGroup]="filterSectionGroup">
-            <tui-select
-                tuiTextfieldSize="s"
-                formControlName="filterSectionName"
-            >
-                Раздел
-                <input placeholder="Выберите раздел" tuiTextfield />
-                <tui-data-list-wrapper
-                    *tuiDataList
-                    [items]="noteSection"
-                ></tui-data-list-wrapper>
-            </tui-select>
-        </form>
+    <div class="filter-buttons-block">
         <button
-            appearance="outline"
+            class="filter-button"
+            appearance="flat"
             size="s"
             tuiButton
             type="button"
-            (click)="filterData()"
+            (click)="filterByData()"
         >
             Дата
         </button>
         <button
-            appearance="outline"
+            class="filter-button"
+            appearance="flat"
             size="s"
             tuiButton
             type="button"
-            (click)="filterComplited()"
+            (click)="filterByComplited()"
         >
             Статус
         </button>
@@ -38,6 +27,25 @@
                 @for (colName of tableColName; track colName) {
                     <th tuiTh [resizable]="true">
                         <strong>{{ colName }}</strong>
+                        @if (colName === 'Раздел') {
+                            <form [formGroup]="filterSectionGroup">
+                                <tui-select
+                                    tuiTextfieldSize="s"
+                                    formControlName="filterSectionName"
+                                >
+                                    Раздел
+                                    <input
+                                        placeholder="Выберите раздел"
+                                        tuiTextfield
+                                    />
+                                    <tui-data-list-wrapper
+                                        *tuiDataList
+                                        [items]="filterName"
+                                        (click)="filterBySection()"
+                                    ></tui-data-list-wrapper>
+                                </tui-select>
+                            </form>
+                        }
                     </th>
                 }
             </tr>
@@ -54,6 +62,16 @@
                                 note.isCompleted ? 'Устранено' : 'Нет решения'
                             "
                         ></tui-badge>
+                    </td>
+                    <td tuiTd>
+                        <div class="author-block">
+                            <tui-avatar
+                                [text]="note.author"
+                                class="avatar"
+                                size="xs"
+                            ></tui-avatar>
+                            {{ note.author }}
+                        </div>
                     </td>
                     <td tuiTd>{{ note.date.join('.') }}</td>
                     <td tuiTd>

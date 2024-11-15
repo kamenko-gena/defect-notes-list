@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+    TuiAvatarModule,
     TuiBadgeModule,
     TuiDataListWrapperModule,
     TuiSelectModule,
@@ -14,7 +15,6 @@ import {
 import {
     TuiButtonModule,
     TuiDataListModule,
-    TuiGroupModule,
     TuiLinkModule,
     TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
@@ -31,7 +31,7 @@ import {
 } from '@angular/forms';
 import { NotesFilterService } from 'src/app/services/notes-filter-service/notes-filter.service';
 
-const NOTE_SECTIONS = [
+const FILTER_SECTION_NAME = [
     'Все',
     'Пожарная автоматика',
     'Охранная сигнализация',
@@ -39,7 +39,7 @@ const NOTE_SECTIONS = [
     'Видеонаблюдение',
 ];
 
-type NoteSections = typeof NOTE_SECTIONS;
+type NoteSections = typeof FILTER_SECTION_NAME;
 type Section = NoteSections[number];
 
 @Component({
@@ -51,8 +51,8 @@ type Section = NoteSections[number];
         TuiButtonModule,
         TuiLinkModule,
         RouterLink,
+        TuiAvatarModule,
         TuiTableModule,
-        TuiGroupModule,
         TuiSelectModule,
         TuiDataListModule,
         TuiDataListWrapperModule,
@@ -65,39 +65,41 @@ type Section = NoteSections[number];
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotesListComponent implements OnInit {
+    readonly tableColName = [
+        'Раздел',
+        'Название',
+        'Статус',
+        'Автор',
+        'Дата',
+        'Ссылка',
+    ];
     private readonly firebaseStorageService = inject(FirebaseStorageService);
     private readonly notesFilterService = inject(NotesFilterService);
-    readonly tableColName = ['Раздел', 'Название', 'Статус', 'Дата', 'Ссылка'];
-    readonly noteSection = NOTE_SECTIONS;
+    readonly filterName = FILTER_SECTION_NAME;
     private filterDataFlag = false;
     private filterComplitedFlag = false;
 
     notesFromFirebase = signal<NoteInterface[]>([]);
 
     readonly filterSectionGroup = new FormGroup({
-        filterSectionName: new FormControl<Section>(''),
+        filterSectionName: new FormControl<Section>('Все'),
     });
-
-    // Не корректно работает фильтр по Статусу.
-    // Как вызывать функцию когда выбрал из списка и коикнул в другом месте
 
     ngOnInit(): void {
         this.firebaseStorageService
             .getNotes()
-            .pipe(
-                take(1),
-                map((notes) =>
-                    notes.sort(
-                        (a, b) => Number(a.isCompleted) - Number(b.isCompleted),
-                    ),
-                ),
-            )
+            .pipe(take(1))
             .subscribe((notes) => {
-                this.notesFromFirebase.set(notes);
+                this.notesFilterService
+                    .filterByData(this.filterDataFlag, notes)
+                    .subscribe((sortedNotes) => {
+                        this.notesFromFirebase.set(sortedNotes);
+                    });
+                this.filterDataFlag = !this.filterDataFlag;
             });
     }
 
-    filterData(): void {
+    filterByData(): void {
         this.notesFilterService
             .filterByData(this.filterDataFlag, [...this.notesFromFirebase()])
             .subscribe((notes) => {
@@ -106,7 +108,7 @@ export class NotesListComponent implements OnInit {
         this.filterDataFlag = !this.filterDataFlag;
     }
 
-    filterComplited(): void {
+    filterByComplited(): void {
         this.notesFilterService
             .filterByCompleted(this.filterComplitedFlag, [
                 ...this.notesFromFirebase(),
@@ -117,13 +119,20 @@ export class NotesListComponent implements OnInit {
         this.filterComplitedFlag = !this.filterComplitedFlag;
     }
 
-    // filterComplited(): void {
-    //     const sortedNotes = [...this.notesFromFirebase()].sort((a, b) => {
-    //         return this.filterStatusFlag
-    //             ? Number(a.isCompleted) - Number(b.isCompleted)
-    //             : Number(b.isCompleted) - Number(a.isCompleted);
-    //     });
-    //     this.filterStatusFlag = !this.filterStatusFlag;
-    //     this.notesFromFirebase.set(sortedNotes);
-    // }
+    filterBySection(): void {
+        const sectionName = this.filterSectionGroup.value.filterSectionName;
+        if (sectionName === 'Все') return this.ngOnInit();
+
+        this.firebaseStorageService
+            .getNotes()
+            .pipe(
+                take(1),
+                map((notes) =>
+                    notes.filter((note) => note.section === sectionName),
+                ),
+            )
+            .subscribe((sortedNotes) => {
+                this.notesFromFirebase.set(sortedNotes);
+            });
+    }
 }
