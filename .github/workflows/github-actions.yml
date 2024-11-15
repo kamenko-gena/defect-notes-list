@@ -1,7 +1,7 @@
-name: Linters Check
+name: Linters check and Deploy
 on: [push]
 jobs:
-  Run-linters:
+  Run-linters and Deploy:
     runs-on: ubuntu-latest
     steps:
     
@@ -22,4 +22,12 @@ jobs:
       - name: Run Prettier
         run: npm run prettier
 
+      - name: Build
+        run: npm run build
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-deploy@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
 
