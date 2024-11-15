@@ -6,7 +6,6 @@ import {
     signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiBlockStatusModule } from '@taiga-ui/layout';
 import { TuiSvgModule } from '@taiga-ui/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +14,7 @@ import { take } from 'rxjs';
 @Component({
     selector: 'app-not-found-page',
     standalone: true,
-    imports: [CommonModule, TuiBlockStatusModule, TuiSvgModule],
+    imports: [CommonModule, TuiSvgModule],
     templateUrl: './not-found-page.component.html',
     styleUrl: './not-found-page.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,

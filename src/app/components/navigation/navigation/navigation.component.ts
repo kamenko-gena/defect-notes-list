@@ -69,7 +69,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        if (this.currentUserName() == '') {
+        if (!this.currentUserName()) {
             return;
         }
         this.dialogs
