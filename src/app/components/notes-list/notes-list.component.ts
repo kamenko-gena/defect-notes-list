@@ -58,6 +58,7 @@ type Section = NoteSections[number];
     templateUrl: './notes-list.component.html',
     styleUrl: './notes-list.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [NotesFilterService],
 })
 export class NotesListComponent implements OnInit {
     readonly tableColName = [

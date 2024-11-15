@@ -1,10 +1,6 @@
-import { Injectable } from '@angular/core';
 import { Observable, of, take } from 'rxjs';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
 
-@Injectable({
-    providedIn: 'root',
-})
 export class NotesFilterService {
     filterByData(
         earlyFirst: boolean,
