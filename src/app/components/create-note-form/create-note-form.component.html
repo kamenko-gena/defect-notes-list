@@ -62,7 +62,12 @@
     </div>
 
     <div class="tui-form__row">
-        <button tuiButton type="submit" [disabled]="!noteFormGroup.valid">
+        <button
+            size="m"
+            tuiButton
+            type="submit"
+            [disabled]="!noteFormGroup.valid"
+        >
             {{ note ? 'Изменить' : 'Создать' }}
         </button>
     </div>
