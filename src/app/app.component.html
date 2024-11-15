@@ -1,12 +1,10 @@
 <tui-root>
-    <nav>
-        <a routerLink="/">Главная</a>
-        &nbsp;
-        <a routerLink="/my-notes">Мои заметки</a>
-        &nbsp;
-        <a routerLink="/my-notes/create">Создать заметку</a>
-        &nbsp;
-        <a routerLink="/authentication">Авторизация</a>
-    </nav>
-    <router-outlet />
+    <div class="main-content">
+        <app-navigation class="nav-container"></app-navigation>
+        <tui-scrollbar class="content" [hidden]="true">
+            <div class="content">
+                <router-outlet />
+            </div>
+        </tui-scrollbar>
+    </div>
 </tui-root>

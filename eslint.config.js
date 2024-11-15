@@ -49,6 +49,14 @@ module.exports = [
   {
     files: ['**/*.html'],
     rules: {
+      "@angular-eslint/template/elements-content": [
+        "warn",
+        {
+          "allowList": [
+            "tuiLink",
+            "tuiIconButton",
+          ]
+        }],
       'prettier/prettier': ['error', {
         'tabWidth': 4,
       }],

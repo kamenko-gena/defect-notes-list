@@ -3,20 +3,28 @@ default:
 
 stages:
   - install
-  - build
-  - validate
-
+  - eslint
+  - prettier
+  
 install:
   stage: install
   script:
-    - echo 'install dependencies...'
+    - echo 'Install dependencies...'
+    - npm ci
+  artifacts:
+    paths:
+    - node_modules/
+    expire_in: 1h
 
-build:
-  stage: build
-  script:
-    - echo 'building project...'
 
-validate:
-  stage: validate
+eslint:
+  stage: eslint
   script:
-    - echo 'validation...'
+    - echo 'Run ESlint...'
+    - npm run lint
+
+prettier:
+  stage: prettier
+  script:
+    - echo 'Run Prettier...'
+    - npm run prettier

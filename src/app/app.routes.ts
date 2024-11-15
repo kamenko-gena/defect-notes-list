@@ -6,10 +6,12 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 import { MyNotePageComponent } from './components/pages/my-notes-page/my-note-page/my-note-page.component';
 import { noteIdResolver } from './resolvers/note-id.resolver';
+import { registerUserGuard } from './guards/register-user/register-user.guard';
 
 export const appRoutes: Route[] = [
     {
         path: 'my-notes',
+        canActivate: [registerUserGuard],
         children: [
             {
                 path: 'create',

@@ -1,0 +1,31 @@
+@if (currentUserName()) {
+    <tui-avatar [text]="currentUserName()" class="avatar"></tui-avatar>
+}
+
+<div class="nav-container tui-skeleton_light">
+    <a class="nav-link" icon="tuiIconHomeLarge" routerLink="/" tuiLink></a>
+    &nbsp;
+    <a
+        class="nav-link"
+        icon="tuiIconClipboardLarge"
+        routerLink="/my-notes"
+        tuiLink
+    ></a>
+    &nbsp;
+    <a
+        class="nav-link"
+        icon="tuiIconEditLarge"
+        routerLink="/my-notes/create"
+        tuiLink
+    ></a>
+</div>
+
+@if (currentUserName()) {
+    <button
+        appearance="icon"
+        icon="tuiIconLogOutLarge"
+        tuiIconButton
+        type="button"
+        (click)="logout()"
+    ></button>
+}
