@@ -1,7 +1,7 @@
 name: Linters check and Deploy
 on: [push]
 jobs:
-  Run-linters and Deploy:
+  Run-linters-Deploy:
     runs-on: ubuntu-latest
     steps:
     
