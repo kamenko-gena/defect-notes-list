@@ -1,11 +1,11 @@
 <form
-    class="registration-form-group"
+    class="registration-form"
     [formGroup]="registrationFormGroup"
     (submit)="submitForm()"
 >
-    <div class="tui-form__header">
+    <div class="input-content">
         <tui-input formControlName="userName" tuiHintContent="A tooltip">
-            Имя
+            Фамилия Имя
             <tui-error
                 formControlName="userName"
                 [error]="[] | tuiFieldError | async"
@@ -13,7 +13,7 @@
         </tui-input>
     </div>
 
-    <div class="tui-form__row">
+    <div class="input-content">
         <tui-input formControlName="email" tuiHintContent="A tooltip">
             Email
             <tui-error
@@ -23,7 +23,7 @@
         </tui-input>
     </div>
 
-    <div class="tui-form__row">
+    <div class="input-content">
         <tui-input-password formControlName="password" tuiTextfieldSize="s">
             Пароль
             <tui-error
@@ -33,7 +33,7 @@
         </tui-input-password>
     </div>
 
-    <div class="tui-form__row">
+    <div class="input-content">
         <tui-input-password
             formControlName="confirmPassword"
             tuiTextfieldSize="s"
@@ -48,7 +48,7 @@
 
     <tui-error [error]="[] | tuiFieldError | async"></tui-error>
 
-    <div class="tui-form__buttons">
+    <div class="registration-btn">
         <button
             tuiButton
             size="m"
