@@ -1,7 +1,7 @@
-@if (currentUserName()) {
+@if (currentUser().username) {
     <tui-avatar
         [autoColor]="true"
-        [text]="currentUserName()"
+        [text]="currentUser().username"
         class="avatar"
     ></tui-avatar>
 }
@@ -24,7 +24,7 @@
     ></a>
 </div>
 
-@if (currentUserName()) {
+@if (currentUser().username) {
     <button
         appearance="icon"
         icon="tuiIconLogOutLarge"

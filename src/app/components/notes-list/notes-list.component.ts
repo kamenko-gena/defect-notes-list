@@ -14,7 +14,6 @@ import {
 } from '@taiga-ui/kit';
 import {
     TuiButtonModule,
-    TuiDataListModule,
     TuiLinkModule,
     TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
@@ -49,7 +48,6 @@ type Section = NoteSections[number];
         TuiAvatarModule,
         TuiTableModule,
         TuiSelectModule,
-        TuiDataListModule,
         TuiDataListWrapperModule,
         TuiTextfieldControllerModule,
         FormsModule,

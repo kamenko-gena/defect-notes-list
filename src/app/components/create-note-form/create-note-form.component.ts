@@ -18,7 +18,6 @@ import {
     TuiDataListWrapperModule,
     TuiFieldErrorPipeModule,
     TuiInputModule,
-    TuiRadioBlockModule,
     TuiSelectModule,
     TuiTextareaModule,
 } from '@taiga-ui/kit';
@@ -28,12 +27,11 @@ import {
     TuiButtonModule,
     TuiErrorModule,
     TuiGroupModule,
-    TuiLinkModule,
 } from '@taiga-ui/core';
 import { tuiMarkControlAsTouchedAndValidate } from '@taiga-ui/cdk';
 import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-descript-validator/solution-descript-validator.directive';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { take } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
@@ -55,7 +53,6 @@ type Section = NoteSections[number];
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        TuiRadioBlockModule,
         TuiButtonModule,
         TuiGroupModule,
         TuiSelectModule,
@@ -67,8 +64,6 @@ type Section = NoteSections[number];
         TuiAlertModule,
         TuiInputModule,
         SolutionDescriptValidatorDirective,
-        RouterLink,
-        TuiLinkModule,
     ],
     templateUrl: './create-note-form.component.html',
     styleUrl: './create-note-form.component.less',
@@ -89,7 +84,7 @@ export class CreateNoteFormComponent implements OnInit {
     private readonly firebaseStorageService = inject(FirebaseStorageService);
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-    private currentUserName = '';
+    private currentUser = {};
     readonly currentDate = CURRENT_DATE;
     readonly noteSection = NOTE_SECTIONS;
     @Input() note: NoteInterface | null = null;
@@ -112,7 +107,7 @@ export class CreateNoteFormComponent implements OnInit {
             .getCurrentUser()
             .pipe(take(1))
             .subscribe((user) => {
-                if (user) this.currentUserName = user.username;
+                if (user) this.currentUser = user;
             });
     }
 
@@ -137,7 +132,7 @@ export class CreateNoteFormComponent implements OnInit {
                     this.currentDate.getMonth() + 1,
                     this.currentDate.getFullYear(),
                 ],
-                author: this.currentUserName,
+                author: this.currentUser,
             } as NoteInterface)
             .subscribe();
 
