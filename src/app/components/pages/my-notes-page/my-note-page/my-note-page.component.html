@@ -25,7 +25,8 @@
                 <strong>Дата создания:</strong>
                 {{ foundNote.date.join('.') }}
             </p>
-
+        }
+        @if (currentUserIsAuthor()) {
             <div class="buttons-block">
                 <button
                     class="edit-button"
@@ -51,7 +52,7 @@
             </div>
         }
     </div>
-} @else {
+} @else if (currentUserIsAuthor()) {
     <h3 class="tui-text_h5">Редактирование заметки</h3>
     <app-create-note-form [note]="foundNote"></app-create-note-form>
 }
