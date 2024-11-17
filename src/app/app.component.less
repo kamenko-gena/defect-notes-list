@@ -17,5 +17,18 @@
 
 .content {
     margin: 0 auto;
-    align-items: center;
+    height: 100vh;
+    align-content: center;
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        display: block;
+    }
+
+    .nav-container {
+        flex-direction: row;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 1em;
+    }
 }

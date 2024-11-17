@@ -13,7 +13,6 @@ import {
     TuiDialogModule,
     TuiDialogService,
     TuiLinkModule,
-    TuiRootModule,
 } from '@taiga-ui/core';
 import {
     TUI_PROMPT,
@@ -24,13 +23,13 @@ import {
 import { take, tap } from 'rxjs';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { CreateNoteFormComponent } from 'src/app/components/create-note-form/create-note-form.component';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 @Component({
     selector: 'app-my-note-page',
     standalone: true,
     imports: [
         CommonModule,
-        TuiRootModule,
         TuiButtonModule,
         TuiDialogModule,
         TuiIslandModule,
@@ -49,8 +48,10 @@ export class MyNotePageComponent implements OnInit {
     private readonly router = inject(Router);
     private readonly dialogs: TuiDialogService = inject(TuiDialogService);
     private readonly firebaseStorageService = inject(FirebaseStorageService);
+    private readonly authService = inject(AuthService);
 
     readonly isEditNoteMode = signal<boolean>(false);
+    readonly currentUserIsAuthor = signal<boolean>(false);
     foundNote!: NoteInterface;
 
     ngOnInit(): void {
@@ -60,10 +61,20 @@ export class MyNotePageComponent implements OnInit {
                 return;
             }
             this.foundNote = data['note'];
+            this.authService
+                .getCurrentUser()
+                .pipe(take(1))
+                .subscribe((receivedUser) => {
+                    receivedUser &&
+                    receivedUser.email === this.foundNote.author.email
+                        ? this.currentUserIsAuthor.set(true)
+                        : this.currentUserIsAuthor.set(false);
+                });
         });
     }
 
     deleteNote(): void {
+        if (!this.currentUserIsAuthor) return;
         this.dialogs
             .open<boolean>(TUI_PROMPT, {
                 label: 'Удалить заметку?',
@@ -89,6 +100,7 @@ export class MyNotePageComponent implements OnInit {
     }
 
     editNote(): void {
+        if (!this.currentUserIsAuthor) return;
         this.isEditNoteMode.set(true);
     }
 }

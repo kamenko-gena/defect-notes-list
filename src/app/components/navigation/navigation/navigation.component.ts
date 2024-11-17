@@ -22,6 +22,7 @@ import {
     TuiPromptModule,
 } from '@taiga-ui/kit';
 import { Router, RouterModule } from '@angular/router';
+import { UserInterface } from 'src/app/interfaces/user-interface';
 
 @Component({
     selector: 'app-navigation',
@@ -50,16 +51,19 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private readonly dialogs: TuiDialogService = inject(TuiDialogService);
     private readonly router = inject(Router);
     private subscription: Subscription = new Subscription();
-    readonly currentUserName = signal<string>('');
+    readonly currentUser = signal<UserInterface>({
+        email: '',
+        username: '',
+    });
 
     ngOnInit(): void {
         this.subscription = this.authService.getCurrentUser().subscribe({
-            next: (currentUser) => {
-                if (!currentUser) {
-                    this.currentUserName.set('');
+            next: (receivedUser) => {
+                if (!receivedUser) {
+                    this.currentUser.set({ email: '', username: '' });
                     return;
                 }
-                this.currentUserName.set(currentUser.username);
+                this.currentUser.set(receivedUser);
             },
         });
     }
@@ -69,7 +73,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        if (!this.currentUserName()) {
+        if (!this.currentUser().username) {
             return;
         }
         this.dialogs

@@ -3,7 +3,6 @@
         <div class="select-container">
             <tui-select tuiTextfieldSize="s" [formControl]="filterSectionName">
                 Раздел
-                <input placeholder="Выберите раздел" tuiTextfield />
                 <tui-data-list-wrapper
                     *tuiDataList
                     [items]="filterName"
@@ -59,11 +58,11 @@
                         <div class="author-block">
                             <tui-avatar
                                 [autoColor]="true"
-                                [text]="note.author"
+                                [text]="note.author.username"
                                 class="avatar"
                                 size="xs"
                             ></tui-avatar>
-                            {{ note.author }}
+                            {{ note.author.username }}
                         </div>
                     </td>
                     <td tuiTd>{{ note.date.join('.') }}</td>

@@ -14,7 +14,7 @@
         [error]="[] | tuiFieldError | async"
     ></tui-error>
 
-    <div class="tui-form__row">
+    <div class="input-content">
         <tui-input formControlName="equipName" tuiHintContent="A tooltip">
             Наименование оборудования
             <tui-error
@@ -24,7 +24,7 @@
         </tui-input>
     </div>
 
-    <div class="tui-form__row">
+    <div class="input-content">
         <tui-textarea formControlName="faultDescript"
             >Описание неисправности</tui-textarea
         >
@@ -35,34 +35,38 @@
     </div>
 
     <div
-        class="tui-form__row"
+        class="validator-container"
         appSolutionDescriptValidator
         [isCompletedControl]="noteFormGroup.controls.isCompleted"
         [solutionDescriptControl]="noteFormGroup.controls.solutionDescript"
     >
-        <div class="tui-form__row">
-            <tui-checkbox-labeled formControlName="isCompleted">
-                Неисправность устранена
-            </tui-checkbox-labeled>
-        </div>
+        <tui-checkbox-labeled
+            class="checkbox-content"
+            formControlName="isCompleted"
+        >
+            Неисправность устранена
+        </tui-checkbox-labeled>
 
-        <div class="tui-form__row">
-            @if (noteFormGroup.controls.isCompleted.value) {
-                <div class="tui-form__row">
-                    <tui-textarea formControlName="solutionDescript"
-                        >Методика устранения неисправности</tui-textarea
-                    >
-                    <tui-error
-                        formControlName="solutionDescript"
-                        [error]="[] | tuiFieldError | async"
-                    ></tui-error>
-                </div>
-            }
-        </div>
+        @if (noteFormGroup.controls.isCompleted.value) {
+            <div class="textarea-content">
+                <tui-textarea formControlName="solutionDescript"
+                    >Методика устранения неисправности</tui-textarea
+                >
+                <tui-error
+                    formControlName="solutionDescript"
+                    [error]="[] | tuiFieldError | async"
+                ></tui-error>
+            </div>
+        }
     </div>
 
-    <div class="tui-form__row">
-        <button tuiButton type="submit" [disabled]="!noteFormGroup.valid">
+    <div class="note-form-btn">
+        <button
+            size="m"
+            tuiButton
+            type="submit"
+            [disabled]="!noteFormGroup.valid"
+        >
             {{ note ? 'Изменить' : 'Создать' }}
         </button>
     </div>

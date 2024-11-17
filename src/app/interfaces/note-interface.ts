@@ -1,6 +1,8 @@
+import { UserInterface } from './user-interface';
+
 export interface NoteInterface {
     id: string;
-    author: string;
+    author: UserInterface;
     date: [number, number, number];
     section:
         | 'Пожарная автоматика'

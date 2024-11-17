@@ -1,9 +1,5 @@
-<form
-    class="login-form-group"
-    [formGroup]="loginFormGroup"
-    (submit)="submitForm()"
->
-    <div class="tui-form__header">
+<form class="login-form" [formGroup]="loginFormGroup" (submit)="submitForm()">
+    <div class="input-content">
         <tui-input formControlName="email" tuiHintContent="A tooltip">
             Email
             <tui-error
@@ -13,7 +9,7 @@
         </tui-input>
     </div>
 
-    <div class="tui-form__row">
+    <div class="input-content">
         <tui-input-password formControlName="password" tuiTextfieldSize="s">
             Пароль
             <tui-error
@@ -23,9 +19,9 @@
         </tui-input-password>
     </div>
 
-    <div class="tui-form__buttons">
+    <div class="login-btn">
         <button
-            class="tui-form__button"
+            size="m"
             tuiButton
             type="submit"
             [showLoader]="loadingBtn()"

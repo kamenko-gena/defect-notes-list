@@ -52,7 +52,7 @@ import { take } from 'rxjs';
                 required: 'Обязательное заполнение!',
                 minlength: ({ requiredLength }: { requiredLength: string }) =>
                     `Минимальная длинна ${requiredLength}`,
-                pattern: 'Используйте только латиницу и цифры',
+                pattern: 'Используйте кириллицу, латиницу',
                 passwordsMismatch: 'Пароли не совпадают!',
             },
         },
@@ -81,7 +81,7 @@ export class RegistrFormComponent {
                 validators: [
                     Validators.required,
                     Validators.minLength(3),
-                    Validators.pattern('[A-ZА-Яa-zа-я]*'),
+                    Validators.pattern('[A-ZА-Яa-zа-я ]*'),
                 ],
             }),
             email: new FormControl<string | null>('', {
@@ -123,7 +123,6 @@ export class RegistrFormComponent {
                     this.loadingBtn.set(false);
                     return;
                 }
-
                 this.alerts
                     .open('Успешная регистрация!', {
                         label: 'Успех',
@@ -132,9 +131,12 @@ export class RegistrFormComponent {
                     .pipe(take(1))
                     .subscribe();
                 this.loadingBtn.set(false);
+                // this.registrationFormGroup.reset();
                 this.router.navigateByUrl('/my-notes');
             },
+            complete: () => {
+                this.registrationFormGroup.reset();
+            },
         });
-        this.registrationFormGroup.reset();
     }
 }
