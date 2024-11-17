@@ -15,7 +15,7 @@
         ],
         "sharedGlobals": [
             "{workspaceRoot}/.gitlab-ci.yml",
-            "{workspaceRoot}/.github/workflows/workflow.yml"
+            "{workspaceRoot}/.github/workflows/github-actions.yml"
         ]
     },
     "nxCloudId": "673917e8e7757bb786a40ce5",
