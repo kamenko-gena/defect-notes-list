@@ -14,6 +14,7 @@ module.exports = [
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
       '@typescript-eslint/no-unused-expressions': ['error', {'allowTernary' : true }],
+      '@typescript-eslint/no-empty-function': ['error', { "allow": ["arrowFunctions"] }],
       'prettier/prettier': ['error', {
         "endOfLine": "auto",
         'tabWidth': 4,
@@ -59,6 +60,7 @@ module.exports = [
         }],
       'prettier/prettier': ['error', {
         'tabWidth': 4,
+        'endOfLine': 'auto',
       }],
     },
   },
