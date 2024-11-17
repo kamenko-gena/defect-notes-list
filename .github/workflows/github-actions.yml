@@ -20,10 +20,10 @@ jobs:
         run: npm run build
 
       - name: Setup Pages
-        run: actions/configure-pages@v5
+        usses: actions/configure-pages@v5
 
       - name: Upload artifact
-        run: actions/upload-pages-artifact@v3
+        usses: actions/upload-pages-artifact@v3
         with:
           path: './dist/browser'
 
