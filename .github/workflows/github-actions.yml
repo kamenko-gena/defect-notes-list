@@ -1,5 +1,9 @@
 name: Try to deploy
 on: [push]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
   Run-linters:
     runs-on: ubuntu-latest
