@@ -1,46 +1,29 @@
-name: Deploy static content to Pages
-
-on:
-  push:
-    branches: ["master"]
-
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
+name: Try to deploy
+on: [push]
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  Run-linters:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+    
+      - name: Check out Git repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
         with:
-            node-version: 20
-            cache: 'npm'
+          node-version: 20
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Build project...
+      - name: Build project
         run: npm run build
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        run: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        run: actions/upload-pages-artifact@v3
         with:
           path: './dist/browser'
 
