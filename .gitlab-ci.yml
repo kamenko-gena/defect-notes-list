@@ -34,7 +34,8 @@ pages:
     - echo 'Deploying on GL Pages...'
   artifacts:
    paths:
-    - ./dist/notes-list-app/browser
+    - public
    expire_in: 1h
   dependencies:
     - build
+  publish: dist/notes-list-app/browser
