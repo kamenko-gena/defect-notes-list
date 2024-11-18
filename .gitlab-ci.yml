@@ -16,7 +16,7 @@ install:
     expire_in: 1h
 
 build-deploy:
-  stage: build
+  stage: build-deploy
   only:
     - master
   script:
