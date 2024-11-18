@@ -17,8 +17,6 @@ install:
 
 build-deploy:
   stage: build-deploy
-  only:
-    - master
   script:
     - echo 'Build Project...'
     - npm run build
