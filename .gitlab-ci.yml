@@ -3,7 +3,8 @@ default:
 
 stages:
   - install
-  - build-deploy
+  - build
+  - deploy
   
 install:
   stage: install
@@ -15,8 +16,8 @@ install:
     - node_modules/
     expire_in: 1h
 
-build-deploy:
-  stage: build-deploy
+build:
+  stage: build
   script:
     - echo 'Build Project...'
     - npm run build
@@ -26,3 +27,14 @@ build-deploy:
    expire_in: 1h
   dependencies:
     - install
+
+pages:
+  stage: deploy
+  script:
+    - echo 'Deploying on GL Pages...'
+  artifacts:
+   paths:
+    - public
+   expire_in: 1h
+  dependencies:
+    - build
