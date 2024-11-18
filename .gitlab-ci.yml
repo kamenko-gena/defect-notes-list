@@ -22,7 +22,7 @@ build-deploy:
     - npm run build
   artifacts:
    paths:
-    - build/notes-list-app/browser
+    - dist/notes-list-app/browser
    expire_in: 1h
   dependencies:
     - install
