@@ -3,8 +3,7 @@ default:
 
 stages:
   - install
-  - eslint
-  - prettier
+  - build-deploy
   
 install:
   stage: install
