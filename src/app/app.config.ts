@@ -4,8 +4,6 @@ import {
     ApplicationConfig,
     provideZoneChangeDetection,
     importProvidersFrom,
-    ErrorHandler,
-    APP_INITIALIZER,
 } from '@angular/core';
 import { provideRouter, Router } from '@angular/router';
 import { appRoutes } from './app.routes';
@@ -13,7 +11,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideHttpClient } from '@angular/common/http';
-import * as Sentry from '@sentry/angular';
+import { TraceService } from '@sentry/angular';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDcueZQtZ8_EHxnzPTisM2xFMgIsqAUHpQ',
@@ -35,18 +33,8 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom([TuiRootModule]),
         provideHttpClient(),
         {
-            provide: ErrorHandler,
-            useValue: Sentry.createErrorHandler(),
-        },
-        {
-            provide: Sentry.TraceService,
+            provide: TraceService,
             deps: [Router],
-        },
-        {
-            provide: APP_INITIALIZER,
-            useFactory: () => () => {},
-            deps: [Sentry.TraceService],
-            multi: true,
         },
     ],
 };
