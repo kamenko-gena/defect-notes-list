@@ -16,7 +16,6 @@
         "outputPath": "dist/notes-list-app",
         "index": "./src/index.html",
         "browser": "./src/main.ts",
-        "baseHref": "/defect-notes-list/",
         "polyfills": [
           "zone.js"
         ],
