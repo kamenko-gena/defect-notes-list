@@ -23,7 +23,7 @@ build:
     - npm run build
   artifacts:
    paths:
-    - dist/notes-list-app/browser
+    - dist/
    expire_in: 1h
   dependencies:
     - install
@@ -32,10 +32,11 @@ pages:
   stage: deploy
   script:
     - echo 'Deploying on GL Pages...'
+    - cp -r dist/notes-list-app/browser/* public/
   artifacts:
    paths:
-    - public
+    - public/
    expire_in: 1h
   dependencies:
+    - install
     - build
-  publish: dist/notes-list-app/browser
