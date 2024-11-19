@@ -20,8 +20,9 @@
             </div>
             @if (foundNote.isCompleted) {
                 <div class="solution-title-container tui-text_body-l">
-                    <p class="solution-title">Методика устранения:</p>
-                    {{ foundNote.solutionDescript }}
+                    <p class="solution-title">
+                        {{ foundNote.solutionDescript }}
+                    </p>
                 </div>
             }
         }

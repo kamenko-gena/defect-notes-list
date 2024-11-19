@@ -20,7 +20,7 @@ import {
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
 import { RouterLink } from '@angular/router';
-import { TuiComparator, TuiTableModule } from '@taiga-ui/addon-table';
+import { TuiTableModule } from '@taiga-ui/addon-table';
 import { map, Subscription, take } from 'rxjs';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotesFilterService } from 'src/app/services/notes-filter-service/notes-filter.service';
@@ -68,9 +68,6 @@ export class NotesListComponent implements OnInit, OnDestroy {
     readonly notesFromFirebase = signal<NoteInterface[]>([]);
 
     readonly filterSectionName = new FormControl<Section | null>(null);
-
-    readonly totalSorter: TuiComparator<NoteInterface> = (a, b) =>
-        Number(a.isCompleted) - Number(b.isCompleted);
 
     ngOnInit(): void {
         this.getNotes();

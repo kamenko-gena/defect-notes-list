@@ -3,6 +3,8 @@ default:
 
 stages:
   - install
+  - eslint
+  - prettier
   - build
   - deploy
   
@@ -15,6 +17,18 @@ install:
     paths:
     - node_modules/
     expire_in: 1h
+
+eslint:
+  stage: eslint
+  script:
+    - echo 'ESlint run...'
+    - npm run lint
+  
+prettier:
+  stage: prettier
+  script:
+    - echo 'Prettier run...'
+    - npm run prettier
 
 build:
   stage: build

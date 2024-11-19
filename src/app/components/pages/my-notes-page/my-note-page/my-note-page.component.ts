@@ -46,13 +46,13 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
 export class MyNotePageComponent implements OnInit {
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
-    private readonly dialogs: TuiDialogService = inject(TuiDialogService);
+    private readonly dialogs = inject(TuiDialogService);
     private readonly firebaseStorageService = inject(FirebaseStorageService);
     private readonly authService = inject(AuthService);
 
     readonly isEditNoteMode = signal<boolean>(false);
     readonly currentUserIsAuthor = signal<boolean>(false);
-    foundNote!: NoteInterface;
+    foundNote: NoteInterface | null = null;
 
     ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
@@ -65,22 +65,22 @@ export class MyNotePageComponent implements OnInit {
                 .getCurrentUser()
                 .pipe(take(1))
                 .subscribe((receivedUser) => {
-                    receivedUser &&
-                    receivedUser.email === this.foundNote.author.email
-                        ? this.currentUserIsAuthor.set(true)
-                        : this.currentUserIsAuthor.set(false);
+                    this.currentUserIsAuthor.set(
+                        receivedUser?.email === this.foundNote?.author.email,
+                    );
                 });
         });
     }
 
     deleteNote(): void {
-        if (!this.currentUserIsAuthor) return;
+        if (!this.currentUserIsAuthor || !this.foundNote) return;
+        const currentNote = this.foundNote;
         this.dialogs
             .open<boolean>(TUI_PROMPT, {
                 label: 'Удалить заметку?',
                 size: 's',
                 data: {
-                    content: `Запись о неисправности <b>${this.foundNote.equipName}</b> будет удалена!`,
+                    content: `Запись о неисправности <b>${currentNote.equipName}</b> будет удалена!`,
                     yes: 'Да',
                     no: 'Нет',
                 },
@@ -89,7 +89,7 @@ export class MyNotePageComponent implements OnInit {
                 tap((userAnswer) => {
                     if (userAnswer) {
                         this.firebaseStorageService
-                            .removeNote(this.foundNote.id)
+                            .removeNote(currentNote.id)
                             .subscribe();
                         this.router.navigateByUrl('/my-notes');
                     }

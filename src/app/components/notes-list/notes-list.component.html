@@ -17,7 +17,7 @@
         </div>
         <button
             class="filter-button"
-            appearance="flat"
+            appearance="outline"
             size="s"
             tuiButton
             type="button"
@@ -27,7 +27,7 @@
         </button>
         <button
             class="filter-button"
-            appearance="flat"
+            appearance="outline"
             size="s"
             tuiButton
             type="button"
@@ -39,15 +39,11 @@
     <table class="table-content" tuiTable>
         <thead>
             <tr tuiThGroup>
-                <th tuiTh [resizable]="true">{{ tableColName[0] }}</th>
-                <th tuiTh [resizable]="true">{{ tableColName[1] }}</th>
-                <th tuiTh [resizable]="true" [sorter]="totalSorter">
-                    {{ tableColName[2] }}
-                </th>
-                <th tuiTh [resizable]="true">{{ tableColName[3] }}</th>
-                <th tuiTh [resizable]="true">
-                    {{ tableColName[4] }}
-                </th>
+                @for (colName of tableColName; track colName) {
+                    <th class="table-head" tuiTh [resizable]="true">
+                        <strong>{{ colName }}</strong>
+                    </th>
+                }
             </tr>
         </thead>
         <tbody tuiTbody>
