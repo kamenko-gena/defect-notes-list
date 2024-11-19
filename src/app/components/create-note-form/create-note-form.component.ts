@@ -18,7 +18,6 @@ import {
     TuiDataListWrapperModule,
     TuiFieldErrorPipeModule,
     TuiInputModule,
-    TuiRadioBlockModule,
     TuiSelectModule,
     TuiTextareaModule,
 } from '@taiga-ui/kit';
@@ -28,15 +27,15 @@ import {
     TuiButtonModule,
     TuiErrorModule,
     TuiGroupModule,
-    TuiLinkModule,
 } from '@taiga-ui/core';
 import { tuiMarkControlAsTouchedAndValidate } from '@taiga-ui/cdk';
 import { SolutionDescriptValidatorDirective } from 'src/app/directives/solution-descript-validator/solution-descript-validator.directive';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { take } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { UserInterface } from 'src/app/interfaces/user-interface';
 
 const NOTE_SECTIONS = [
     'Пожарная автоматика',
@@ -55,7 +54,6 @@ type Section = NoteSections[number];
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        TuiRadioBlockModule,
         TuiButtonModule,
         TuiGroupModule,
         TuiSelectModule,
@@ -67,8 +65,6 @@ type Section = NoteSections[number];
         TuiAlertModule,
         TuiInputModule,
         SolutionDescriptValidatorDirective,
-        RouterLink,
-        TuiLinkModule,
     ],
     templateUrl: './create-note-form.component.html',
     styleUrl: './create-note-form.component.less',
@@ -85,24 +81,29 @@ type Section = NoteSections[number];
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateNoteFormComponent implements OnInit {
-    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    private readonly alerts = inject(TuiAlertService);
     private readonly firebaseStorageService = inject(FirebaseStorageService);
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-    private currentUserName = '';
+    private currentUser: UserInterface | null = null;
     readonly currentDate = CURRENT_DATE;
     readonly noteSection = NOTE_SECTIONS;
     @Input() note: NoteInterface | null = null;
 
     readonly noteFormGroup = new FormGroup({
-        section: new FormControl<Section>('', [Validators.required]),
+        section: new FormControl<Section>('', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
         equipName: new FormControl<string>('', {
+            nonNullable: true,
             validators: [Validators.required, Validators.maxLength(50)],
         }),
         faultDescript: new FormControl<string>('', {
+            nonNullable: true,
             validators: [Validators.required, Validators.maxLength(500)],
         }),
-        isCompleted: new FormControl<boolean>(false),
+        isCompleted: new FormControl<boolean>(false, { nonNullable: true }),
         solutionDescript: new FormControl<string | null>(null),
     });
 
@@ -112,7 +113,7 @@ export class CreateNoteFormComponent implements OnInit {
             .getCurrentUser()
             .pipe(take(1))
             .subscribe((user) => {
-                if (user) this.currentUserName = user.username;
+                if (user) this.currentUser = user;
             });
     }
 
@@ -120,7 +121,9 @@ export class CreateNoteFormComponent implements OnInit {
         if (this.noteFormGroup.invalid) {
             tuiMarkControlAsTouchedAndValidate(this.noteFormGroup);
             return;
-        }
+        } else if (this.currentUser === null) return;
+
+        const value = this.noteFormGroup.getRawValue();
 
         this.alerts
             .open('Заметка создана!', {
@@ -131,14 +134,14 @@ export class CreateNoteFormComponent implements OnInit {
             .subscribe();
         this.firebaseStorageService
             .addNoteToStorage({
-                ...this.noteFormGroup.value,
+                ...value,
                 date: [
                     this.currentDate.getDate(),
                     this.currentDate.getMonth() + 1,
                     this.currentDate.getFullYear(),
                 ],
-                author: this.currentUserName,
-            } as NoteInterface)
+                author: this.currentUser,
+            })
             .subscribe();
 
         this.noteFormGroup.reset();

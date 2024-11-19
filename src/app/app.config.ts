@@ -5,12 +5,13 @@ import {
     provideZoneChangeDetection,
     importProvidersFrom,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideHttpClient } from '@angular/common/http';
+import { TraceService } from '@sentry/angular';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyDcueZQtZ8_EHxnzPTisM2xFMgIsqAUHpQ',
@@ -31,5 +32,9 @@ export const appConfig: ApplicationConfig = {
         provideFirestore(() => getFirestore()),
         importProvidersFrom([TuiRootModule]),
         provideHttpClient(),
+        {
+            provide: TraceService,
+            deps: [Router],
+        },
     ],
 };

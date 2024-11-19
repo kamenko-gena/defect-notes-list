@@ -13,9 +13,12 @@
             "!{projectRoot}/src/test-setup.[jt]s",
             "!{projectRoot}/test-setup.[jt]s"
         ],
-        "sharedGlobals": ["{workspaceRoot}/.gitlab-ci.yml"]
+        "sharedGlobals": [
+            "{workspaceRoot}/.gitlab-ci.yml",
+            "{workspaceRoot}/.github/workflows/github-actions.yml"
+        ]
     },
-    "nxCloudId": "671394783484636275ef4d6d",
+    "nxCloudId": "673a07fc95399d50b54736f6",
     "targetDefaults": {
         "@angular-devkit/build-angular:application": {
             "cache": true,

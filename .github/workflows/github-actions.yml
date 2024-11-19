@@ -1,7 +1,11 @@
-name: Linters Check
+name: Linting and Deploy
 on: [push]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 jobs:
-  Run-linters:
+  linters:
     runs-on: ubuntu-latest
     steps:
     
@@ -9,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -22,4 +26,33 @@ jobs:
       - name: Run Prettier
         run: npm run prettier
 
+  build-deploy:
+    needs: [linters]
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Check out Git repository
+        uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'dist/notes-list-app/browser'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

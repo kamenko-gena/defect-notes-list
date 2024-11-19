@@ -1,19 +1,23 @@
 <div class="table-container">
     <div class="filter-buttons-block">
         <div class="select-container">
-            <tui-select tuiTextfieldSize="s" [formControl]="filterSectionName">
-                Раздел
-                <input placeholder="Выберите раздел" tuiTextfield />
-                <tui-data-list-wrapper
-                    *tuiDataList
+            <tui-select
+                tuiTextfieldSize="s"
+                [formControl]="filterSectionName"
+                [tuiTextfieldCleaner]="true"
+            >
+                Фильтр по разделу
+
+                <select
+                    placeholder="Выберите раздел"
+                    tuiSelect
                     [items]="filterName"
-                    (click)="filterBySection()"
-                ></tui-data-list-wrapper>
+                ></select>
             </tui-select>
         </div>
         <button
             class="filter-button"
-            appearance="flat"
+            appearance="outline"
             size="s"
             tuiButton
             type="button"
@@ -23,7 +27,7 @@
         </button>
         <button
             class="filter-button"
-            appearance="flat"
+            appearance="outline"
             size="s"
             tuiButton
             type="button"
@@ -36,7 +40,7 @@
         <thead>
             <tr tuiThGroup>
                 @for (colName of tableColName; track colName) {
-                    <th tuiTh [resizable]="true">
+                    <th class="table-head" tuiTh [resizable]="true">
                         <strong>{{ colName }}</strong>
                     </th>
                 }
@@ -45,8 +49,12 @@
         <tbody tuiTbody>
             @for (note of notesFromFirebase(); track note) {
                 <tr>
+                    <td tuiTd>
+                        <a [routerLink]="['/my-notes', note.id]" tuiLink>
+                            {{ note.equipName }}
+                        </a>
+                    </td>
                     <td tuiTd>{{ note.section }}</td>
-                    <td tuiTd>{{ note.equipName }}</td>
                     <td tuiTd>
                         <tui-badge
                             [status]="note.isCompleted ? 'success' : 'error'"
@@ -59,19 +67,14 @@
                         <div class="author-block">
                             <tui-avatar
                                 [autoColor]="true"
-                                [text]="note.author"
+                                [text]="note.author.username"
                                 class="avatar"
                                 size="xs"
                             ></tui-avatar>
-                            {{ note.author }}
+                            {{ note.author.username }}
                         </div>
                     </td>
                     <td tuiTd>{{ note.date.join('.') }}</td>
-                    <td tuiTd>
-                        <a [routerLink]="['/my-notes', note.id]" tuiLink>
-                            Подробнее
-                        </a>
-                    </td>
                 </tr>
             }
         </tbody>
