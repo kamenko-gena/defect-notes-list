@@ -17,9 +17,19 @@
 
 .author-block {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
 }
 
 .select-container {
     min-width: 15em;
     align-content: center;
+}
+
+@media (max-width: 580px) {
+    table tr > *:nth-child(2),
+    table tr > *:nth-child(4) {
+        display: none;
+    }
 }
