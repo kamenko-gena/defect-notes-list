@@ -15,7 +15,9 @@ import {
     TuiAlertModule,
     TuiAlertService,
     TuiButtonModule,
+    TuiDialogModule,
     TuiErrorModule,
+    TuiLinkModule,
 } from '@taiga-ui/core';
 import {
     TUI_INPUT_PASSWORD_DEFAULT_OPTIONS,
@@ -41,6 +43,8 @@ import { take } from 'rxjs';
         TuiInputModule,
         TuiInputPasswordModule,
         TuiAlertModule,
+        TuiLinkModule,
+        TuiDialogModule,
     ],
     templateUrl: './login-form.component.html',
     styleUrl: './login-form.component.less',
@@ -71,6 +75,8 @@ export class LoginFormComponent {
     private readonly router = inject(Router);
     private readonly alerts = inject(TuiAlertService);
     readonly loadingBtn = signal(false);
+    readonly loadingResetBtn = signal(false);
+    openDialog = false;
 
     readonly loginFormGroup = new FormGroup({
         email: new FormControl<string | null>('', {
@@ -79,6 +85,10 @@ export class LoginFormComponent {
         password: new FormControl<string | null>('', {
             validators: [Validators.required, Validators.minLength(8)],
         }),
+    });
+
+    readonly resetPasswordFormControl = new FormControl<string | null>(null, {
+        validators: [Validators.required, Validators.minLength(6)],
     });
 
     submitForm() {
@@ -118,5 +128,38 @@ export class LoginFormComponent {
                 this.router.navigateByUrl('/my-notes');
             },
         });
+    }
+    showDialog(): void {
+        this.openDialog = true;
+    }
+
+    resetPassword(): void {
+        if (this.resetPasswordFormControl.invalid) {
+            return;
+        }
+        this.loadingResetBtn.set(true);
+        const emailPaswReset = this.resetPasswordFormControl.getRawValue();
+        if (emailPaswReset) {
+            this.authService.resetPassword(emailPaswReset).subscribe({
+                next: (response) => {
+                    this.alerts
+                        .open(
+                            response === null
+                                ? 'Неверно указан Email!'
+                                : 'Письмо отправлено на указанный Email',
+                            {
+                                label: response === null ? 'Ошибка.' : 'Готово',
+                                status: response === null ? 'error' : 'success',
+                            },
+                        )
+                        .pipe(take(1))
+                        .subscribe();
+                },
+                complete: () => {
+                    this.loadingResetBtn.set(false);
+                    this.openDialog = false;
+                },
+            });
+        }
     }
 }

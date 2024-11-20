@@ -1,3 +1,31 @@
+<ng-template
+    let-observer
+    [tuiDialogOptions]="{ label: 'Восстановление пароля', size: 's' }"
+    [(tuiDialog)]="openDialog"
+>
+    <p>
+        Введите Email, на который будет отправлено письмо для восстановления
+        пароля.
+    </p>
+    <tui-input [formControl]="resetPasswordFormControl" tuiAutoFocus>
+        Email
+    </tui-input>
+    <tui-error
+        [formControl]="resetPasswordFormControl"
+        [error]="[] | tuiFieldError | async"
+    ></tui-error>
+    <p>
+        <button
+            [showLoader]="loadingResetBtn()"
+            tuiButton
+            type="submit"
+            (click)="resetPassword()"
+            [disabled]="resetPasswordFormControl.invalid"
+        >
+            Восстановить
+        </button>
+    </p>
+</ng-template>
 <form class="login-form" [formGroup]="loginFormGroup" (submit)="submitForm()">
     <div class="input-content">
         <tui-input formControlName="email" tuiHintContent="A tooltip">
@@ -18,7 +46,9 @@
             ></tui-error>
         </tui-input-password>
     </div>
-
+    <button class="content" (click)="showDialog()" tuiLink>
+        Забыли пароль?
+    </button>
     <div class="login-btn">
         <button
             size="m"
