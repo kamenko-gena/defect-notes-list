@@ -28,7 +28,7 @@ import { take } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthenticationPageComponent implements OnInit {
-    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    private readonly alerts = inject(TuiAlertService);
     private readonly authService = inject(AuthService);
 
     readonly activeTab = signal(1);

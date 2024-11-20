@@ -69,7 +69,7 @@ import { take } from 'rxjs';
 export class LoginFormComponent {
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    private readonly alerts = inject(TuiAlertService);
     readonly loadingBtn = signal(false);
 
     readonly loginFormGroup = new FormGroup({

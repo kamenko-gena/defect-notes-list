@@ -6,7 +6,6 @@ import { inject } from '@angular/core';
 export const noteIdResolver: ResolveFn<NoteInterface | null> = (
     route: ActivatedRouteSnapshot,
 ) => {
-    return inject(FirebaseStorageService).getNoteById(
-        route.paramMap.get('noteId')!,
-    );
+    const noteId = route.paramMap.get('noteId');
+    return noteId ? inject(FirebaseStorageService).getNoteById(noteId) : null;
 };

@@ -14,17 +14,17 @@
         [error]="[] | tuiFieldError | async"
     ></tui-error>
 
-    <div class="input-content">
+    <div class="content">
         <tui-input formControlName="equipName" tuiHintContent="A tooltip">
             Наименование оборудования
-            <tui-error
-                formControlName="equipName"
-                [error]="[] | tuiFieldError | async"
-            ></tui-error>
         </tui-input>
+        <tui-error
+            formControlName="equipName"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
 
-    <div class="input-content">
+    <div class="content">
         <tui-textarea formControlName="faultDescript"
             >Описание неисправности</tui-textarea
         >
@@ -35,20 +35,17 @@
     </div>
 
     <div
-        class="validator-container"
+        class="content"
         appSolutionDescriptValidator
         [isCompletedControl]="noteFormGroup.controls.isCompleted"
         [solutionDescriptControl]="noteFormGroup.controls.solutionDescript"
     >
-        <tui-checkbox-labeled
-            class="checkbox-content"
-            formControlName="isCompleted"
-        >
+        <tui-checkbox-labeled class="content" formControlName="isCompleted">
             Неисправность устранена
         </tui-checkbox-labeled>
 
         @if (noteFormGroup.controls.isCompleted.value) {
-            <div class="textarea-content">
+            <div class="content">
                 <tui-textarea formControlName="solutionDescript"
                     >Методика устранения неисправности</tui-textarea
                 >
@@ -60,7 +57,7 @@
         }
     </div>
 
-    <div class="note-form-btn">
+    <div class="content">
         <button
             size="m"
             tuiButton

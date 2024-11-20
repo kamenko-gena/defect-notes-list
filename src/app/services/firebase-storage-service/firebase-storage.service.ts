@@ -11,6 +11,8 @@ import {
 import { catchError, from, map, Observable, of, take } from 'rxjs';
 import { NoteInterface } from 'src/app/interfaces/note-interface';
 
+type NoteInterfaceFromFormType = Omit<NoteInterface, 'id'>;
+
 @Injectable({
     providedIn: 'root',
 })
@@ -34,7 +36,9 @@ export class FirebaseStorageService {
         );
     }
 
-    addNoteToStorage(noteToCreate: NoteInterface): Observable<string | null> {
+    addNoteToStorage(
+        noteToCreate: NoteInterfaceFromFormType,
+    ): Observable<string | null> {
         return from(addDoc(this.notesCollection, noteToCreate)).pipe(
             map((response) => response.id),
             catchError(() => {

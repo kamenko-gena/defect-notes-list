@@ -4,11 +4,7 @@ export interface NoteInterface {
     id: string;
     author: UserInterface;
     date: [number, number, number];
-    section:
-        | 'Пожарная автоматика'
-        | 'Охранная сигнализация'
-        | 'Управление доступом'
-        | 'Видеонаблюдение';
+    section: string;
     equipName: string;
     faultDescript: string;
     isCompleted: boolean;

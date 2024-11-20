@@ -5,6 +5,8 @@ stages:
   - install
   - eslint
   - prettier
+  - build
+  - deploy
   
 install:
   stage: install
@@ -16,15 +18,39 @@ install:
     - node_modules/
     expire_in: 1h
 
-
 eslint:
   stage: eslint
   script:
-    - echo 'Run ESlint...'
+    - echo 'ESlint run...'
     - npm run lint
-
+  
 prettier:
   stage: prettier
   script:
-    - echo 'Run Prettier...'
+    - echo 'Prettier run...'
     - npm run prettier
+
+build:
+  stage: build
+  script:
+    - echo 'Build Project...'
+    - npm run build
+  artifacts:
+   paths:
+    - dist/
+   expire_in: 1h
+  dependencies:
+    - install
+
+pages:
+  stage: deploy
+  script:
+    - echo 'Deploying on GL Pages...'
+    - cp -r dist/notes-list-app/browser/* public/
+  artifacts:
+   paths:
+    - public/
+   expire_in: 1h
+  dependencies:
+    - install
+    - build

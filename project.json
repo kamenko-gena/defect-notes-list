@@ -16,6 +16,7 @@
         "outputPath": "dist/notes-list-app",
         "index": "./src/index.html",
         "browser": "./src/main.ts",
+        "baseHref": "/fintech2024-notes-list/",
         "polyfills": [
           "zone.js"
         ],
