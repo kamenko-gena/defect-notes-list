@@ -1,7 +1,10 @@
 @if (!isEditNoteMode()) {
-    <div class="flex-container">
+    <div class="note-content">
         @if (foundNote) {
-            <div class="badge-container">
+            <div class="head-container">
+                <div class="date-content">
+                    {{ foundNote.date.join('.') }}
+                </div>
                 <tui-badge
                     [status]="foundNote.isCompleted ? 'success' : 'error'"
                     [value]="
@@ -9,49 +12,47 @@
                     "
                 ></tui-badge>
             </div>
-
-            <h2><strong>Раздел:</strong> {{ foundNote.section }}</h2>
-            <h2><strong>Название:</strong> {{ foundNote.equipName }}</h2>
-            <p class="tui-text_body-l">
-                <strong>Описание:</strong> {{ foundNote.faultDescript }}
-            </p>
+            <div class="title-content tui-text_h6">
+                {{ foundNote.equipName }}
+            </div>
+            <div class="descript-container tui-text_body-l">
+                {{ foundNote.faultDescript }}
+            </div>
             @if (foundNote.isCompleted) {
-                <p class="tui-text_body-l">
-                    <strong>Методика устранения:</strong>
-                    {{ foundNote.solutionDescript }}
-                </p>
+                <div class="solution-title-container tui-text_body-l">
+                    <p class="solution-title">
+                        {{ foundNote.solutionDescript }}
+                    </p>
+                </div>
             }
-            <p class="ttui-text_body-s">
-                <strong>Дата создания:</strong>
-                {{ foundNote.date.join('.') }}
-            </p>
-
+        }
+        @if (currentUserIsAuthor()) {
             <div class="buttons-block">
                 <button
                     class="edit-button"
-                    size="s"
-                    appearance="flat"
-                    tuiButton
-                    type="button"
-                    (click)="deleteNote()"
-                >
-                    Удалить
-                </button>
-
-                <button
-                    class="edit-button"
-                    size="s"
-                    appearance="flat"
-                    tuiButton
+                    appearance="icon"
+                    icon="tuiIconEdit3Large"
+                    tuiIconButton
                     type="button"
                     (click)="editNote()"
                 >
                     Редактировать
                 </button>
+
+                <button
+                    class="edit-button"
+                    appearance="icon"
+                    icon="tuiIconTrash2Large"
+                    tuiIconButton
+                    type="button"
+                    (click)="deleteNote()"
+                >
+                    Удалить
+                </button>
             </div>
         }
     </div>
-} @else {
+} @else if (currentUserIsAuthor()) {
     <h3 class="tui-text_h5">Редактирование заметки</h3>
     <app-create-note-form [note]="foundNote"></app-create-note-form>
 }

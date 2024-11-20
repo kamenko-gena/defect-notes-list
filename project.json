@@ -16,6 +16,7 @@
         "outputPath": "dist/notes-list-app",
         "index": "./src/index.html",
         "browser": "./src/main.ts",
+        "baseHref": "/Students/g.kamenko/Homeworks/course-work/defect-notes-list/",
         "polyfills": [
           "zone.js"
         ],
@@ -50,8 +51,8 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "1.5mb",
+              "maximumError": "2mb"
             },
             {
               "type": "anyComponentStyle",

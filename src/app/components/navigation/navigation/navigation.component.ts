@@ -47,19 +47,19 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class NavigationComponent implements OnInit, OnDestroy {
     private readonly authService = inject(AuthService);
-    private readonly dialogs: TuiDialogService = inject(TuiDialogService);
+    private readonly dialogs = inject(TuiDialogService);
     private readonly router = inject(Router);
     private subscription: Subscription = new Subscription();
-    readonly currentUserName = signal<string>('');
+    readonly currentUser = signal<string | null>(null);
 
     ngOnInit(): void {
         this.subscription = this.authService.getCurrentUser().subscribe({
-            next: (currentUser) => {
-                if (!currentUser) {
-                    this.currentUserName.set('');
+            next: (receivedUser) => {
+                if (!receivedUser) {
+                    this.currentUser.set(null);
                     return;
                 }
-                this.currentUserName.set(currentUser.username);
+                this.currentUser.set(receivedUser.username);
             },
         });
     }
@@ -69,7 +69,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        if (!this.currentUserName()) {
+        if (!this.currentUser()) {
             return;
         }
         this.dialogs

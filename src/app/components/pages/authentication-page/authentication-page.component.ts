@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { LoginFormComponent } from '../../login-form/login-form.component';
 import { TuiTabsModule } from '@taiga-ui/kit';
 import { RegistrFormComponent } from '../../registr-form/registr-form.component';
-import { TuiAlertModule, TuiAlertService, TuiRootModule } from '@taiga-ui/core';
+import { TuiAlertModule, TuiAlertService } from '@taiga-ui/core';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { take } from 'rxjs';
 
@@ -20,7 +20,6 @@ import { take } from 'rxjs';
         CommonModule,
         LoginFormComponent,
         RegistrFormComponent,
-        TuiRootModule,
         TuiTabsModule,
         TuiAlertModule,
     ],
@@ -29,7 +28,7 @@ import { take } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthenticationPageComponent implements OnInit {
-    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    private readonly alerts = inject(TuiAlertService);
     private readonly authService = inject(AuthService);
 
     readonly activeTab = signal(1);
@@ -55,7 +54,7 @@ export class AuthenticationPageComponent implements OnInit {
 
                 this.alerts
                     .open(
-                        'Необхоимо войти в учетную запись или создать новую.',
+                        'Необходимо войти в учетную запись или создать новую.',
                         {
                             label: 'Войдите или зарегистрируйтесь!',
                             status: 'info',

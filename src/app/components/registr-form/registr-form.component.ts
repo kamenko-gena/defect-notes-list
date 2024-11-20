@@ -52,7 +52,7 @@ import { take } from 'rxjs';
                 required: 'Обязательное заполнение!',
                 minlength: ({ requiredLength }: { requiredLength: string }) =>
                     `Минимальная длинна ${requiredLength}`,
-                pattern: 'Используйте только латиницу и цифры',
+                pattern: 'Используйте кириллицу, латиницу',
                 passwordsMismatch: 'Пароли не совпадают!',
             },
         },
@@ -72,7 +72,7 @@ import { take } from 'rxjs';
 export class RegistrFormComponent {
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-    private readonly alerts: TuiAlertService = inject(TuiAlertService);
+    private readonly alerts = inject(TuiAlertService);
     readonly loadingBtn = signal(false);
 
     readonly registrationFormGroup = new FormGroup(
@@ -81,7 +81,7 @@ export class RegistrFormComponent {
                 validators: [
                     Validators.required,
                     Validators.minLength(3),
-                    Validators.pattern('[A-ZА-Яa-zа-я]*'),
+                    Validators.pattern('[A-ZА-Яa-zа-я\\s]*'),
                 ],
             }),
             email: new FormControl<string | null>('', {
@@ -123,7 +123,6 @@ export class RegistrFormComponent {
                     this.loadingBtn.set(false);
                     return;
                 }
-
                 this.alerts
                     .open('Успешная регистрация!', {
                         label: 'Успех',
@@ -134,7 +133,9 @@ export class RegistrFormComponent {
                 this.loadingBtn.set(false);
                 this.router.navigateByUrl('/my-notes');
             },
+            complete: () => {
+                this.registrationFormGroup.reset();
+            },
         });
-        this.registrationFormGroup.reset();
     }
 }

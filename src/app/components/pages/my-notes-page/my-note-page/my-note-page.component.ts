@@ -13,7 +13,6 @@ import {
     TuiDialogModule,
     TuiDialogService,
     TuiLinkModule,
-    TuiRootModule,
 } from '@taiga-ui/core';
 import {
     TUI_PROMPT,
@@ -24,13 +23,13 @@ import {
 import { take, tap } from 'rxjs';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { CreateNoteFormComponent } from 'src/app/components/create-note-form/create-note-form.component';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 @Component({
     selector: 'app-my-note-page',
     standalone: true,
     imports: [
         CommonModule,
-        TuiRootModule,
         TuiButtonModule,
         TuiDialogModule,
         TuiIslandModule,
@@ -47,11 +46,13 @@ import { CreateNoteFormComponent } from 'src/app/components/create-note-form/cre
 export class MyNotePageComponent implements OnInit {
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
-    private readonly dialogs: TuiDialogService = inject(TuiDialogService);
+    private readonly dialogs = inject(TuiDialogService);
     private readonly firebaseStorageService = inject(FirebaseStorageService);
+    private readonly authService = inject(AuthService);
 
     readonly isEditNoteMode = signal<boolean>(false);
-    foundNote!: NoteInterface;
+    readonly currentUserIsAuthor = signal<boolean>(false);
+    foundNote: NoteInterface | null = null;
 
     ngOnInit(): void {
         this.route.data.pipe(take(1)).subscribe((data) => {
@@ -60,16 +61,26 @@ export class MyNotePageComponent implements OnInit {
                 return;
             }
             this.foundNote = data['note'];
+            this.authService
+                .getCurrentUser()
+                .pipe(take(1))
+                .subscribe((receivedUser) => {
+                    this.currentUserIsAuthor.set(
+                        receivedUser?.email === this.foundNote?.author.email,
+                    );
+                });
         });
     }
 
     deleteNote(): void {
+        if (!this.currentUserIsAuthor || !this.foundNote) return;
+        const currentNote = this.foundNote;
         this.dialogs
             .open<boolean>(TUI_PROMPT, {
                 label: 'Удалить заметку?',
                 size: 's',
                 data: {
-                    content: `Запись о неисправности <b>${this.foundNote.equipName}</b> будет удалена!`,
+                    content: `Запись о неисправности <b>${currentNote.equipName}</b> будет удалена!`,
                     yes: 'Да',
                     no: 'Нет',
                 },
@@ -78,7 +89,7 @@ export class MyNotePageComponent implements OnInit {
                 tap((userAnswer) => {
                     if (userAnswer) {
                         this.firebaseStorageService
-                            .removeNote(this.foundNote.id)
+                            .removeNote(currentNote.id)
                             .subscribe();
                         this.router.navigateByUrl('/my-notes');
                     }
@@ -89,6 +100,7 @@ export class MyNotePageComponent implements OnInit {
     }
 
     editNote(): void {
+        if (!this.currentUserIsAuthor) return;
         this.isEditNoteMode.set(true);
     }
 }
