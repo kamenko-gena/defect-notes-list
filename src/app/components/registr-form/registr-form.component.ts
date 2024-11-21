@@ -114,27 +114,33 @@ export class RegistrFormComponent {
             next: (user) => {
                 if (user == null) {
                     this.alerts
-                        .open('Указан неверный Email!', {
-                            label: `Ошибка!`,
-                            status: 'error',
-                        })
+                        .open(
+                            'Некорректный Email! (либо такой Email уже зарегистрирован)',
+                            {
+                                label: `Ошибка!`,
+                                status: 'error',
+                            },
+                        )
                         .pipe(take(1))
                         .subscribe();
                     this.loadingBtn.set(false);
                     return;
                 }
-                this.alerts
-                    .open('Успешная регистрация!', {
-                        label: 'Успех',
-                        status: 'success',
-                    })
-                    .pipe(take(1))
-                    .subscribe();
-                this.loadingBtn.set(false);
-                this.router.navigateByUrl('/my-notes');
-            },
-            complete: () => {
-                this.registrationFormGroup.reset();
+                this.authService.login(email, password).subscribe(() => {
+                    this.alerts
+                        .open(
+                            `<strong>${userName}</strong>! Добро пожаловать!`,
+                            {
+                                label: 'Готово!',
+                                status: 'success',
+                            },
+                        )
+                        .pipe(take(1))
+                        .subscribe();
+                    this.loadingBtn.set(false);
+                    this.registrationFormGroup.reset();
+                    this.router.navigateByUrl('/my-notes');
+                });
             },
         });
     }

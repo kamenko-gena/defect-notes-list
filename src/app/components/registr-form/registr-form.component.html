@@ -6,31 +6,31 @@
     <div class="input-content">
         <tui-input formControlName="userName" tuiHintContent="A tooltip">
             Фамилия Имя
-            <tui-error
-                formControlName="userName"
-                [error]="[] | tuiFieldError | async"
-            ></tui-error>
         </tui-input>
+        <tui-error
+            formControlName="userName"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
 
     <div class="input-content">
         <tui-input formControlName="email" tuiHintContent="A tooltip">
             Email
-            <tui-error
-                formControlName="email"
-                [error]="[] | tuiFieldError | async"
-            ></tui-error>
         </tui-input>
+        <tui-error
+            formControlName="email"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
 
     <div class="input-content">
         <tui-input-password formControlName="password" tuiTextfieldSize="s">
             Пароль
-            <tui-error
-                formControlName="password"
-                [error]="[] | tuiFieldError | async"
-            ></tui-error>
         </tui-input-password>
+        <tui-error
+            formControlName="password"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
 
     <div class="input-content">
@@ -39,11 +39,11 @@
             tuiTextfieldSize="s"
         >
             Подтверждение пароля
-            <tui-error
-                formControlName="confirmPassword"
-                [error]="[] | tuiFieldError | async"
-            ></tui-error>
         </tui-input-password>
+        <tui-error
+            formControlName="confirmPassword"
+            [error]="[] | tuiFieldError | async"
+        ></tui-error>
     </div>
 
     <tui-error [error]="[] | tuiFieldError | async"></tui-error>

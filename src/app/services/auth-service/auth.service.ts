@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import {
     Auth,
     createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
     signInWithEmailAndPassword,
     signOut,
     updateProfile,
@@ -40,6 +41,15 @@ export class AuthService {
         return from(
             signInWithEmailAndPassword(this.firebaseAuth, email, password),
         ).pipe(
+            catchError(() => {
+                return of(null);
+            }),
+            take(1),
+        );
+    }
+
+    resetPassword(email: string): Observable<void | null> {
+        return from(sendPasswordResetEmail(this.firebaseAuth, email)).pipe(
             catchError(() => {
                 return of(null);
             }),
