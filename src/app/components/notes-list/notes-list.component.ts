@@ -15,6 +15,7 @@ import {
 import {
     TuiButtonModule,
     TuiLinkModule,
+    TuiLoaderModule,
     TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
@@ -50,6 +51,7 @@ type Section = NoteSections[number];
         TuiTextfieldControllerModule,
         FormsModule,
         ReactiveFormsModule,
+        TuiLoaderModule,
     ],
     templateUrl: './notes-list.component.html',
     styleUrl: './notes-list.component.less',
@@ -65,6 +67,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     private filterDataFlag = false;
     private filterComplitedFlag = false;
 
+    readonly contentLoader = signal<boolean>(false);
     readonly notesFromFirebase = signal<NoteInterface[]>([]);
 
     readonly filterSectionName = new FormControl<Section | null>(null);
@@ -83,14 +86,20 @@ export class NotesListComponent implements OnInit, OnDestroy {
     }
 
     private getNotes(): void {
+        this.contentLoader.set(true);
         this.firebaseStorageService
             .getNotes()
             .pipe(take(1))
             .subscribe((notes) => {
                 this.notesFilterService
                     .filterByData(this.filterDataFlag, notes)
-                    .subscribe((sortedNotes) => {
-                        this.notesFromFirebase.set(sortedNotes);
+                    .subscribe({
+                        next: (sortedNotes) => {
+                            this.notesFromFirebase.set(sortedNotes);
+                        },
+                        complete: () => {
+                            this.contentLoader.set(false);
+                        },
                     });
                 this.filterDataFlag = !this.filterDataFlag;
             });
@@ -118,6 +127,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
 
     filterBySection(): void {
         if (!this.filterSectionName.value) return this.getNotes();
+        this.contentLoader.set(true);
 
         this.firebaseStorageService
             .getNotes()
@@ -129,8 +139,13 @@ export class NotesListComponent implements OnInit, OnDestroy {
                     ),
                 ),
             )
-            .subscribe((sortedNotes) => {
-                this.notesFromFirebase.set(sortedNotes);
+            .subscribe({
+                next: (sortedNotes) => {
+                    this.notesFromFirebase.set(sortedNotes);
+                },
+                complete: () => {
+                    this.contentLoader.set(false);
+                },
             });
     }
 }

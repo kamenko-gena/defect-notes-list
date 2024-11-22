@@ -1,82 +1,88 @@
-<div class="table-container">
-    <div class="filter-buttons-block">
-        <div class="select-container">
-            <tui-select
-                tuiTextfieldSize="s"
-                [formControl]="filterSectionName"
-                [tuiTextfieldCleaner]="true"
-            >
-                Фильтр по разделу
+<tui-loader [overlay]="true" [showLoader]="contentLoader()">
+    <div class="table-container">
+        <div class="filter-buttons-block">
+            <div class="select-container">
+                <tui-select
+                    tuiTextfieldSize="s"
+                    [formControl]="filterSectionName"
+                    [tuiTextfieldCleaner]="true"
+                >
+                    Фильтр по разделу
 
-                <select
-                    placeholder="Выберите раздел"
-                    tuiSelect
-                    [items]="filterName"
-                ></select>
-            </tui-select>
+                    <select
+                        placeholder="Выберите раздел"
+                        tuiSelect
+                        [items]="filterName"
+                    ></select>
+                </tui-select>
+            </div>
+            <button
+                class="filter-button"
+                appearance="outline"
+                size="s"
+                tuiButton
+                type="button"
+                (click)="filterByData()"
+            >
+                Дата
+            </button>
+            <button
+                class="filter-button"
+                appearance="outline"
+                size="s"
+                tuiButton
+                type="button"
+                (click)="filterByComplited()"
+            >
+                Статус
+            </button>
         </div>
-        <button
-            class="filter-button"
-            appearance="outline"
-            size="s"
-            tuiButton
-            type="button"
-            (click)="filterByData()"
-        >
-            Дата
-        </button>
-        <button
-            class="filter-button"
-            appearance="outline"
-            size="s"
-            tuiButton
-            type="button"
-            (click)="filterByComplited()"
-        >
-            Статус
-        </button>
-    </div>
-    <table class="table-content" tuiTable>
-        <thead>
-            <tr tuiThGroup>
-                @for (colName of tableColName; track colName) {
-                    <th class="table-head" tuiTh [resizable]="true">
-                        <strong>{{ colName }}</strong>
-                    </th>
-                }
-            </tr>
-        </thead>
-        <tbody tuiTbody>
-            @for (note of notesFromFirebase(); track note) {
-                <tr>
-                    <td tuiTd>
-                        <a [routerLink]="['/my-notes', note.id]" tuiLink>
-                            {{ note.equipName }}
-                        </a>
-                    </td>
-                    <td tuiTd>{{ note.section }}</td>
-                    <td tuiTd>
-                        <tui-badge
-                            [status]="note.isCompleted ? 'success' : 'error'"
-                            [value]="
-                                note.isCompleted ? 'Устранено' : 'Нет решения'
-                            "
-                        ></tui-badge>
-                    </td>
-                    <td tuiTd>
-                        <div class="author-block">
-                            <tui-avatar
-                                [autoColor]="true"
-                                [text]="note.author.username"
-                                class="avatar"
-                                size="xs"
-                            ></tui-avatar>
-                            {{ note.author.username }}
-                        </div>
-                    </td>
-                    <td tuiTd>{{ note.date.join('.') }}</td>
+        <table class="table-content" tuiTable>
+            <thead>
+                <tr tuiThGroup>
+                    @for (colName of tableColName; track colName) {
+                        <th class="table-head" tuiTh [resizable]="true">
+                            <strong>{{ colName }}</strong>
+                        </th>
+                    }
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody tuiTbody>
+                @for (note of notesFromFirebase(); track note) {
+                    <tr>
+                        <td tuiTd>
+                            <a [routerLink]="['/my-notes', note.id]" tuiLink>
+                                {{ note.equipName }}
+                            </a>
+                        </td>
+                        <td tuiTd>{{ note.section }}</td>
+                        <td tuiTd>
+                            <tui-badge
+                                [status]="
+                                    note.isCompleted ? 'success' : 'error'
+                                "
+                                [value]="
+                                    note.isCompleted
+                                        ? 'Устранено'
+                                        : 'Нет решения'
+                                "
+                            ></tui-badge>
+                        </td>
+                        <td tuiTd>
+                            <div class="author-block">
+                                <tui-avatar
+                                    [autoColor]="true"
+                                    [text]="note.author.username"
+                                    class="avatar"
+                                    size="xs"
+                                ></tui-avatar>
+                                {{ note.author.username }}
+                            </div>
+                        </td>
+                        <td tuiTd>{{ note.date.join('.') }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</tui-loader>
