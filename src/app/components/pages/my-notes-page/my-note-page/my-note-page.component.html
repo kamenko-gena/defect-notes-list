@@ -51,6 +51,8 @@
                 </button>
             </div>
         }
+
+        <app-comments-list [note]="foundNote"></app-comments-list>
     </div>
 } @else if (currentUserIsAuthor()) {
     <h3 class="tui-text_h5">Редактирование заметки</h3>

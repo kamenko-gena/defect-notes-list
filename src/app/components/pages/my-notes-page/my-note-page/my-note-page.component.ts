@@ -24,6 +24,7 @@ import { take, tap } from 'rxjs';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage-service/firebase-storage.service';
 import { CreateNoteFormComponent } from 'src/app/components/create-note-form/create-note-form.component';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { CommentsListComponent } from 'src/app/components/comments-list/comments-list.component';
 
 @Component({
     selector: 'app-my-note-page',
@@ -38,6 +39,7 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
         TuiBadgeModule,
         RouterLink,
         CreateNoteFormComponent,
+        CommentsListComponent,
     ],
     templateUrl: './my-note-page.component.html',
     styleUrl: './my-note-page.component.less',

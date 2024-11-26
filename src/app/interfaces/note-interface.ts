@@ -1,3 +1,4 @@
+import { CommentInterface } from './comment-interface';
 import { UserInterface } from './user-interface';
 
 export interface NoteInterface {
@@ -9,4 +10,5 @@ export interface NoteInterface {
     faultDescript: string;
     isCompleted: boolean;
     solutionDescript: string | null;
+    comments?: CommentInterface[];
 }
