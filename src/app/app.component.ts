@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-    TuiAlertModule,
-    TuiDialogModule,
-    TuiRootModule,
-    TuiScrollbarModule,
-} from '@taiga-ui/core';
+import { TuiAlertModule, TuiDialogModule, TuiRootModule } from '@taiga-ui/core';
 import { TuiPromptModule } from '@taiga-ui/kit';
 import { NavigationComponent } from './components/navigation/navigation/navigation.component';
 
@@ -18,7 +13,6 @@ import { NavigationComponent } from './components/navigation/navigation/navigati
         TuiPromptModule,
         TuiDialogModule,
         NavigationComponent,
-        TuiScrollbarModule,
     ],
     selector: 'app-root',
     templateUrl: './app.component.html',
