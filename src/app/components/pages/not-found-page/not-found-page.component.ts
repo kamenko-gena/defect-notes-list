@@ -1,39 +1,12 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    inject,
-    OnInit,
-    signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TuiSvgModule } from '@taiga-ui/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
-import { take } from 'rxjs';
 
 @Component({
     selector: 'app-not-found-page',
     standalone: true,
-    imports: [CommonModule, TuiSvgModule],
+    imports: [CommonModule],
     templateUrl: './not-found-page.component.html',
     styleUrl: './not-found-page.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NotFoundPageComponent implements OnInit {
-    private readonly domSanitizer = inject(DomSanitizer);
-    private readonly httpClient = inject(HttpClient);
-    readonly notFoundPageImg = signal<SafeHtml>('');
-
-    ngOnInit(): void {
-        this.httpClient
-            .get(`assets/not-found-page.svg`, {
-                responseType: 'text',
-            })
-            .pipe(take(1))
-            .subscribe((value) => {
-                this.notFoundPageImg.set(
-                    this.domSanitizer.bypassSecurityTrustHtml(value),
-                );
-            });
-    }
-}
+export class NotFoundPageComponent {}
