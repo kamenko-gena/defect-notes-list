@@ -1,0 +1,53 @@
+<tui-textarea [formControl]="commentText">Добавить комментарий...</tui-textarea>
+<button
+    class="comment-button"
+    [disabled]="!commentText.valid"
+    size="m"
+    tuiButton
+    type="button"
+    (click)="addComment()"
+>
+    Добавить
+</button>
+@if (noteComments()) {
+    <tui-loader [overlay]="true" [showLoader]="contentLoader()">
+        @for (
+            comments of noteComments();
+            track comments.commentText;
+            let index = $index
+        ) {
+            <div class="comment-container">
+                <div class="avatar-container">
+                    @if (currentUser()) {
+                        <tui-avatar
+                            size="s"
+                            [autoColor]="true"
+                            [text]="comments.authorUsername"
+                            class="avatar"
+                        ></tui-avatar>
+                    }
+                </div>
+                <div class="main-content">
+                    <p class="comment-text tui-text_body-s">
+                        <strong>{{ comments.authorUsername }}</strong>
+                    </p>
+                    <p class="comment-text tui-text_body-s">
+                        {{ comments.commentText }}
+                    </p>
+                    @if (comments.authorEmail === currentUserEmail()) {
+                        <button
+                            size="xs"
+                            appearance="icon"
+                            icon="tuiIconTrash2"
+                            tuiIconButton
+                            type="button"
+                            (click)="deleteComment(index)"
+                        >
+                            Удалить
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </tui-loader>
+}

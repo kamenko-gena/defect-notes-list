@@ -1,5 +1,5 @@
 .home-page-content {
-    margin: 0 2em;
+    margin: 3em;
     display: flex;
     justify-content: space-between;
     align-content: center;
@@ -7,6 +7,19 @@
 
 .welcome-img {
     width: 20em;
+}
+
+.app-name {
+    margin: 0;
+}
+
+.title-container {
+    display: flex;
+}
+
+.author-title {
+    margin-left: 1em;
+    color: rgba(0, 0, 0, 0.363);
 }
 
 .info-container {
@@ -18,7 +31,7 @@
     padding-right: 5em;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 860px) {
     .home-page-content {
         flex-direction: column;
     }
@@ -29,6 +42,16 @@
 
     .welcome-img {
         display: inline-table;
+        height: auto;
         margin-top: 5em;
+    }
+}
+
+@media (max-width: 1003px) {
+    .title-container {
+        display: initial;
+    }
+    .author-title {
+        margin: 0;
     }
 }

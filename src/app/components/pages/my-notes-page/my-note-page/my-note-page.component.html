@@ -51,8 +51,10 @@
                 </button>
             </div>
         }
+
+        <app-comments-list [note]="foundNote"></app-comments-list>
     </div>
 } @else if (currentUserIsAuthor()) {
-    <h3 class="tui-text_h5">Редактирование заметки</h3>
+    <h3 class="tui-text_h5">Редактирование записи</h3>
     <app-create-note-form [note]="foundNote"></app-create-note-form>
 }
