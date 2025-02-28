@@ -30,6 +30,7 @@
     "@taiga-ui/layout": "^3.95.2",
     "@taiga-ui/styles": "^3.95.2",
     "rxjs": "~7.8.0",
+    "vitest": "^2.1.9",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
@@ -59,6 +60,7 @@
     "@types/node": "^18.16.9",
     "@typescript-eslint/utils": "^8.0.0",
     "angular-eslint": "^18.3.0",
+    "esbuild": "^0.25.0",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-playwright": "^1.6.2",
@@ -73,7 +75,9 @@
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "typescript": "~5.5.2",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.0.0",
+    "undici": "^6.21.1",
+    "vite": "^5.4.6"
   },
   "nx": {
     "includedScripts": []
