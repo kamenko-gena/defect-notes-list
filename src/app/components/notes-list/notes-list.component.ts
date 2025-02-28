@@ -25,6 +25,7 @@ import { TuiTableModule } from '@taiga-ui/addon-table';
 import { map, Subscription, take } from 'rxjs';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotesFilterService } from 'src/app/services/notes-filter-service/notes-filter.service';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 const FILTER_SECTION_NAME = [
     'Пожарная автоматика',
@@ -52,6 +53,7 @@ type Section = NoteSections[number];
         FormsModule,
         ReactiveFormsModule,
         TuiLoaderModule,
+        SearchBarComponent,
     ],
     templateUrl: './notes-list.component.html',
     styleUrl: './notes-list.component.less',

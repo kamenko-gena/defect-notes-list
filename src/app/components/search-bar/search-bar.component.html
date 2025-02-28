@@ -1,0 +1,49 @@
+<tui-primitive-textfield
+    [tuiDropdown]="dropdownContent"
+    [tuiDropdownManual]="showDropdown()"
+    tuiTextfieldIcon="tuiIconSearch"
+    tuiTextfieldSize="s"
+    (valueChange)="onInputChange($event)"
+    >Поиск<ng-template #dropdownContent>
+        <div class="dropdown">
+            <tui-loader [overlay]="true" [showLoader]="contentLoader()">
+            </tui-loader>
+            @if (filteredNotes()) {
+                @if (!filteredNotes()!.length) {
+                    <div>Ничего не найдено</div>
+                } @else {
+                    @for (note of filteredNotes(); track note) {
+                        <ng-container>
+                            <a [routerLink]="['/my-notes', note.id]" tuiLink>
+                                {{ note.equipName }}
+                            </a>
+                        </ng-container>
+                    }
+                }
+            }
+
+            <!-- @for (notes of filteredNotes$ | async; track notes) {
+                <div>{{ notes }}</div>
+                @if (notes) {
+                    <ng-container>
+                        {{ notes.equipName }}
+                    </ng-container>
+                } @else {
+                    <ng-template>
+                        <div>Ничего не найдено</div>
+                    </ng-template>
+                }
+            } -->
+            <!-- <ng-container *ngIf="filteredNotes$ | async as notes">
+                <div *ngIf="notes.length; else noResults">
+                    <div *ngFor="let note of notes">
+                        {{ note.equipName }}
+                    </div>
+                </div>
+                <ng-template #noResults>
+                    <div>Ничего не найдено</div>
+                </ng-template>
+            </ng-container> -->
+        </div></ng-template
+    >
+</tui-primitive-textfield>
