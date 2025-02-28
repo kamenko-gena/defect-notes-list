@@ -28,6 +28,10 @@
     border-bottom-right-radius: 1em;
 }
 
+.buttons-container {
+    display: flex;
+}
+
 .filter-button {
     margin: 0.5em;
     background-color: #fff;
@@ -68,4 +72,20 @@
     .table-content {
         display: contents;
     }
+    .filter-buttons-block{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+    .search-container { 
+        grid-area: 1 / 1 / 2 / 3; 
+        width: 100%;
+    }
+    .select-container { 
+        grid-area: 2 / 1 / 3 / 3; 
+    }
+    .buttons-container { 
+        grid-area: 3 / 1 / 4 / 3; 
+        justify-content: end;
+    } 
 }
