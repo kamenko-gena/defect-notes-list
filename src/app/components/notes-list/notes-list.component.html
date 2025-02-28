@@ -19,26 +19,28 @@
                     ></select>
                 </tui-select>
             </div>
-            <button
-                class="filter-button"
-                appearance="outline"
-                size="s"
-                tuiButton
-                type="button"
-                (click)="filterByData()"
-            >
-                Дата
-            </button>
-            <button
-                class="filter-button"
-                appearance="outline"
-                size="s"
-                tuiButton
-                type="button"
-                (click)="filterByComplited()"
-            >
-                Статус
-            </button>
+            <div class="buttons-container">
+                <button
+                    class="filter-button"
+                    appearance="outline"
+                    size="s"
+                    tuiButton
+                    type="button"
+                    (click)="filterByData()"
+                >
+                    Дата
+                </button>
+                <button
+                    class="filter-button"
+                    appearance="outline"
+                    size="s"
+                    tuiButton
+                    type="button"
+                    (click)="filterByComplited()"
+                >
+                    Статус
+                </button>
+            </div>
         </div>
         <table class="table-content" tuiTable>
             <thead>
